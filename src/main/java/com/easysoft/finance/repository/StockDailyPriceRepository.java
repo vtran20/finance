@@ -1,6 +1,5 @@
 package com.easysoft.finance.repository;
 
-import com.easysoft.finance.domain.Order;
 import com.easysoft.finance.domain.StockDailyPrice;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;

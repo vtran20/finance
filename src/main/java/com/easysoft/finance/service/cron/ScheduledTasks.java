@@ -6,6 +6,7 @@ import com.easysoft.finance.domain.pojo.StockPriceHistory;
 import com.easysoft.finance.repository.OrderRepository;
 import com.easysoft.finance.repository.StockDailyPriceRepository;
 import com.easysoft.finance.repository.StockRepository;
+import com.easysoft.finance.service.EmailService;
 import com.easysoft.finance.service.PriceService;
 import com.easysoft.utils.Utils;
 import org.apache.log4j.Logger;
@@ -38,11 +39,13 @@ public class ScheduledTasks {
     StockDailyPriceRepository stockDailyPriceRepository;
     @Autowired
     PriceService priceService;
+    @Autowired
+    EmailService emailService;
 
     /**
      * This method will get price from Yahoo Finance and update into each stock on each day. Data of Saturday or Sunday will be stored in last Friday.
      */
-    @Scheduled(cron = "0 */15 0-23 * * ?")
+    @Scheduled(cron = "0 */5 0-23 * * ?")
     public void importDailyPrice() {
 
         //get all stocks
@@ -65,6 +68,12 @@ public class ScheduledTasks {
         log.info("The time is now 1 " + new Date());
     }
 
-    public static void main(String[] args) {
+    /**
+     * This method will get price from Yahoo Finance and update into each stock on each day. Data of Saturday or Sunday will be stored in last Friday.
+     */
+    @Scheduled(cron = "0 5 0-23 * * ?")
+    public void notifyForStockCanBeSold() {
+
+        emailService.sendTextMail("test", "test");
     }
 }

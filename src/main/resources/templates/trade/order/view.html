@@ -2,7 +2,7 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head lang="en">
 
-    <title>Spring Framework Guru</title>
+    <title>Order Detail</title>
 
     <!--/*/ <th:block th:include="/fragments/headerinc :: head"></th:block> /*/-->
 </head>
@@ -14,20 +14,61 @@
         <div>
             <form class="form-horizontal">
                 <div class="form-group">
-                    <label class="col-sm-2 control-label">Stock Id:</label>
+                    <label class="col-sm-2 control-label">Id:</label>
                     <div class="col-sm-10">
-                        <p class="form-control-static" th:text="${stock.id}">Stock Id</p></div>
+                        <p class="form-control-static" th:text="${order.id}">Id</p></div>
                 </div>
                 <div class="form-group">
                     <label class="col-sm-2 control-label">Symbol:</label>
                     <div class="col-sm-10">
-                        <p class="form-control-static" th:text="${stock.symbol}">Symbol</p>
+                        <p class="form-control-static" th:text="${order.symbol}">Symbol</p></div>
+                </div>
+                <div class="form-group">
+                    <label class="col-sm-2 control-label">Date:</label>
+                    <div class="col-sm-10">
+                        <p class="form-control-static" th:text="${order.createdDate}">Date</p>
                     </div>
                 </div>
                 <div class="form-group">
-                    <label class="col-sm-2 control-label">Name:</label>
+                    <label class="col-sm-2 control-label">Settlement Date:</label>
                     <div class="col-sm-10">
-                        <p class="form-control-static" th:text="${stock.name}">Name</p>
+                        <p class="form-control-static" th:text="${order.settlementDate}">Settlement Date</p>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-sm-2 control-label">Buy Num:</label>
+                    <div class="col-sm-10">
+                        <p class="form-control-static" th:text="${order.buyNum}">Buy Num</p>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-sm-2 control-label">Buy Fee:</label>
+                    <div class="col-sm-10">
+                        <p class="form-control-static" th:text="${order.buyFee}">Buy Fee</p>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-sm-2 control-label">Buy Price:</label>
+                    <div class="col-sm-10">
+                        <p class="form-control-static" th:text="${order.buyPrice}">Buy Price</p>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-sm-2 control-label">Sell Num:</label>
+                    <div class="col-sm-10">
+                        <p class="form-control-static" th:text="${order.sellNum}">Sell Num</p>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-sm-2 control-label">Sell Fee:</label>
+                    <div class="col-sm-10">
+                        <p class="form-control-static" th:text="${order.sellFee}">Sell Fee</p>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-sm-2 control-label">Sell Price:</label>
+                    <div class="col-sm-10">
+                        <p class="form-control-static" th:text="${order.sellPrice}">Sell Price</p>
                     </div>
                 </div>
             </form>

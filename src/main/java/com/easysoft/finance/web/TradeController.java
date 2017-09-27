@@ -13,6 +13,7 @@ import com.easysoft.utils.Utils;
 import org.apache.commons.collections.IteratorUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
+import org.hsqldb.lib.StringUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -102,6 +103,18 @@ public class TradeController {
 
     @RequestMapping(value = "/trade/order", method = RequestMethod.POST)
     public String saveOrder(Order order) {
+        if (order.getId() == null) {
+            order.setCreatedDate(new Date());
+            order.setUpdatedDate(new Date());
+        } else {
+            //TODO: implement update later
+//            Order o = orderRepository.findById(order.getId()).get();
+//            if (o != null) {
+//                order.setUpdatedDate(new Date());
+//                order.setBuyFee();
+//            }
+        }
+
         orderRepository.save(order);
         return "redirect:/trade/order/" + order.getId();
     }

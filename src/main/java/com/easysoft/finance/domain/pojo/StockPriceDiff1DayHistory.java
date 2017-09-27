@@ -204,19 +204,24 @@ public class StockPriceDiff1DayHistory {
     }
 
     /**
-     * - Total all negative price different days.
-     * - If the first one is positive and the second is negative, sum (first and a list negative)
+     * - Total diff the last 5 days.
+     * - If the sixth one and so on is positive then count on them as well.
      *
      * @return
      */
     public double getNegativeAmount() {
+        int num = 5;
         double negativeAmount = 0;
-        for (double value: sortList) {
-            if (value <= 0) {
-                negativeAmount += value;
-            } else {
-                if (negativeAmount == 0) {
-                    negativeAmount = value;
+        if (sortList.size() >5) {
+            negativeAmount += sortList.get(0);
+            negativeAmount += sortList.get(1);
+            negativeAmount += sortList.get(2);
+            negativeAmount += sortList.get(3);
+            negativeAmount += sortList.get(4);
+            for (int i=5; i < sortList.size(); i++) {
+                double value = sortList.get(i);
+                if (value <= 0) {
+                    negativeAmount += value;
                 } else {
                     break;
                 }

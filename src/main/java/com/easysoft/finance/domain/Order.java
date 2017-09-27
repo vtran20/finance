@@ -2,7 +2,6 @@ package com.easysoft.finance.domain;
 
 import javax.persistence.*;
 import java.io.Serializable;
-import java.time.LocalDate;
 import java.util.Date;
 
 @Entity (name = "orders")
@@ -22,18 +21,21 @@ public class Order implements Serializable {
     private String symbol;
 
     @Column(nullable = true)
-    private Long boughtShareNum;
+    private Long buyNum;
     @Column(nullable = true)
-    private float boughtShareFee;
+    private float buyFee;
     @Column(nullable = true)
-    private float boughtShareAmount;
+    private float buyPrice;
 
     @Column(nullable = true)
-    private Long soldShareNum;
+    private Long sellNum;
     @Column(nullable = true)
-    private float soldShareFee;
+    private float sellFee;
     @Column(nullable = true)
-    private float soldShareAmount;
+    private float sellPrice;
+
+    @Column(nullable = true, length = 1)
+    private String sent;
 
     // ... additional members, often include @OneToMany mappings
 
@@ -77,52 +79,59 @@ public class Order implements Serializable {
         this.symbol = symbol;
     }
 
-    public Long getBoughtShareNum() {
-        return boughtShareNum;
+    public Long getBuyNum() {
+        return buyNum;
     }
 
-    public void setBoughtShareNum(Long boughtShareNum) {
-        this.boughtShareNum = boughtShareNum;
+    public void setBuyNum(Long buyNum) {
+        this.buyNum = buyNum;
     }
 
-    public float getBoughtShareFee() {
-        return boughtShareFee;
+    public float getBuyFee() {
+        return buyFee;
     }
 
-    public void setBoughtShareFee(float boughtShareFee) {
-        this.boughtShareFee = boughtShareFee;
+    public void setBuyFee(float buyFee) {
+        this.buyFee = buyFee;
     }
 
-    public float getBoughtShareAmount() {
-        return boughtShareAmount;
+    public float getBuyPrice() {
+        return buyPrice;
     }
 
-    public void setBoughtShareAmount(float boughtShareAmount) {
-        this.boughtShareAmount = boughtShareAmount;
+    public void setBuyPrice(float buyPrice) {
+        this.buyPrice = buyPrice;
     }
 
-    public Long getSoldShareNum() {
-        return soldShareNum;
+    public Long getSellNum() {
+        return sellNum;
     }
 
-    public void setSoldShareNum(Long soldShareNum) {
-        this.soldShareNum = soldShareNum;
+    public void setSellNum(Long sellNum) {
+        this.sellNum = sellNum;
     }
 
-    public float getSoldShareFee() {
-        return soldShareFee;
+    public float getSellFee() {
+        return sellFee;
     }
 
-    public void setSoldShareFee(float soldShareFee) {
-        this.soldShareFee = soldShareFee;
+    public void setSellFee(float sellFee) {
+        this.sellFee = sellFee;
     }
 
-    public float getSoldShareAmount() {
-        return soldShareAmount;
+    public float getSellPrice() {
+        return sellPrice;
     }
 
-    public void setSoldShareAmount(float soldShareAmount) {
-        this.soldShareAmount = soldShareAmount;
+    public void setSellPrice(float sellPrice) {
+        this.sellPrice = sellPrice;
     }
 
+    public String getSent() {
+        return sent;
+    }
+
+    public void setSent(String sent) {
+        this.sent = sent;
+    }
 }
