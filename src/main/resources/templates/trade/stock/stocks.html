@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head lang="en">
+
+    <title>Stock List</title>
+
+    <!--/*/ <th:block th:include="fragments/headerinc :: head"></th:block> /*/-->
+</head>
+<body>
+<div class="container">
+    <!--/*/ <th:block th:include="fragments/header :: header"></th:block> /*/-->
+    <div th:if="${not #lists.isEmpty(stocks)}">
+        <h2>Stock List</h2>
+        <table class="table table-striped">
+            <tr>
+                <th>Id</th>
+                <th>Symbol</th>
+                <th>Name</th>
+                <!--<th>Price</th>-->
+                <th>View</th>
+                <th>Edit</th>
+                <th>Delete</th>
+            </tr>
+            <tr th:each="stock : ${stocks}">
+                <td th:text="${stock.id}"><a href="/stock/${stock.id}">Id</a></td>
+                <td th:text="${stock.symbol}">Symbol</td>
+                <td th:text="${stock.name}">name</td>
+                <!--<td th:text="${stock.price}">price</td>-->
+                <td><a th:href="${'/trade/stock/' + stock.id}">View</a></td>
+                <td><a th:href="${'/trade/stock/edit/' + stock.id}">Edit</a></td>
+                <td><a th:href="${'/trade/stock/delete/' + stock.id}">Delete</a></td>
+            </tr>
+        </table>
+
+    </div>
+</div>
+
+</body>
+</html>

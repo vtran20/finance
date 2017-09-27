@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head lang="en">
+<title>Stock Prices</title>
+    <!--/*/ <th:block th:include="fragments/headerinc :: head"></th:block> /*/-->
+</head>
+<body>
+
+<div class="container">
+    <!--/*/ <th:block th:include="fragments/header :: header"></th:block> /*/-->
+    <div th:if="${not #lists.isEmpty(stockPriceHistories)}">
+        <h2>Stock Price</h2>
+        <table class="table table-striped">
+            <tr>
+                <th>Symbol</th>
+                <th>Current</th>
+                <th>1 day</th>
+                <th>2 days</th>
+                <th>3 days</th>
+                <th>4 days</th>
+                <th>5 days</th>
+                <th>10 days</th>
+                <th>15 days</th>
+                <th>20 days</th>
+                <th>30 days</th>
+                <th>40 days</th>
+                <th>50 days</th>
+                <th>60 days</th>
+                <th>70 days</th>
+                <th>80 days</th>
+                <th>90 days</th>
+                <th>100 days</th>
+            </tr>
+            <tr th:each="stock : ${stockPriceHistories}">
+                <td th:text="${stock.symbol}"></td>
+                <td th:text="${#numbers.formatDecimal(stock.currPrice, 1, 2)}"></td>
+                <td th:style="${stock.diff1day > 0? 'background:green;color: white':stock.diff1day == 0? 'background:blue;color: white':'background:red;color: white'}"  th:text="${#numbers.formatDecimal(stock.diff1day, 1, 2)}"></td>
+                <td th:style="${stock.diff2days > 0? 'background:green;color: white':stock.diff2days == 0? 'background:blue;color: white':'background:red;color: white' }" th:text="${#numbers.formatDecimal(stock.diff2days, 1, 2)}"></td>
+                <td th:style="${stock.diff3days > 0? 'background:green;color: white':stock.diff3days == 0? 'background:blue;color: white':'background:red;color: white' }" th:text="${#numbers.formatDecimal(stock.diff3days, 1, 2)}"></td>
+                <td th:style="${stock.diff4days > 0? 'background:green;color: white':stock.diff4days == 0? 'background:blue;color: white':'background:red;color: white' }" th:text="${#numbers.formatDecimal(stock.diff4days, 1, 2)}"></td>
+                <td th:style="${stock.diff5days > 0? 'background:green;color: white':stock.diff5days == 0? 'background:blue;color: white':'background:red;color: white' }" th:text="${#numbers.formatDecimal(stock.diff5days, 1, 2)}"></td>
+                <td th:style="${stock.diff10days > 0? 'background:green;color: white':stock.diff10days == 0? 'background:blue;color: white':'background:red;color: white' }" th:text="${#numbers.formatDecimal(stock.diff10days, 1, 2)}"></td>
+                <td th:style="${stock.diff15days > 0? 'background:green;color: white':stock.diff15days == 0? 'background:blue;color: white':'background:red;color: white' }" th:text="${#numbers.formatDecimal(stock.diff15days, 1, 2)}"></td>
+                <td th:style="${stock.diff20days > 0? 'background:green;color: white':stock.diff20days == 0? 'background:blue;color: white':'background:red;color: white' }" th:text="${#numbers.formatDecimal(stock.diff20days, 1, 2)}"></td>
+                <td th:style="${stock.diff30days > 0? 'background:green;color: white':stock.diff30days == 0? 'background:blue;color: white':'background:red;color: white' }" th:text="${#numbers.formatDecimal(stock.diff30days, 1, 2)}"></td>
+                <td th:style="${stock.diff40days > 0? 'background:green;color: white':stock.diff40days == 0? 'background:blue;color: white':'background:red;color: white' }" th:text="${#numbers.formatDecimal(stock.diff40days, 1, 2)}"></td>
+                <td th:style="${stock.diff50days > 0? 'background:green;color: white':stock.diff50days == 0? 'background:blue;color: white':'background:red;color: white' }" th:text="${#numbers.formatDecimal(stock.diff50days, 1, 2)}"></td>
+                <td th:style="${stock.diff60days > 0? 'background:green;color: white':stock.diff60days == 0? 'background:blue;color: white':'background:red;color: white' }" th:text="${#numbers.formatDecimal(stock.diff60days, 1, 2)}"></td>
+                <td th:style="${stock.diff70days > 0? 'background:green;color: white':stock.diff70days == 0? 'background:blue;color: white':'background:red;color: white' }" th:text="${#numbers.formatDecimal(stock.diff70days, 1, 2)}"></td>
+                <td th:style="${stock.diff80days > 0? 'background:green;color: white':stock.diff80days == 0? 'background:blue;color: white':'background:red;color: white' }" th:text="${#numbers.formatDecimal(stock.diff80days, 1, 2)}"></td>
+                <td th:style="${stock.diff90days > 0? 'background:green;color: white':stock.diff90days == 0? 'background:blue;color: white':'background:red;color: white' }" th:text="${#numbers.formatDecimal(stock.diff90days, 1, 2)}"></td>
+                <td th:style="${stock.diff100days > 0? 'background:green;color: white':stock.diff100days == 0? 'background:blue;color: white':'background:red;color: white' }" th:text="${#numbers.formatDecimal(stock.diff100days, 1, 2)}"></td>
+            </tr>
+        </table>
+
+    </div>
+</div>
+</body>
+</html>
