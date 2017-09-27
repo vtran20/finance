@@ -4,8 +4,8 @@ import javax.persistence.*;
 import java.io.Serializable;
 import java.util.Date;
 
-@Entity (name = "orders")
-public class Order implements Serializable {
+@Entity
+public class StockOrder implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)

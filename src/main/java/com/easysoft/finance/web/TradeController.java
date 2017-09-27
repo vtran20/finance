@@ -1,11 +1,11 @@
 package com.easysoft.finance.web;
 
-import com.easysoft.finance.domain.Order;
+import com.easysoft.finance.domain.StockOrder;
 import com.easysoft.finance.domain.Stock;
 import com.easysoft.finance.domain.StockDailyPrice;
 import com.easysoft.finance.domain.pojo.StockPriceDiff1DayHistory;
 import com.easysoft.finance.domain.pojo.StockPriceHistory;
-import com.easysoft.finance.repository.OrderRepository;
+import com.easysoft.finance.repository.StockOrderRepository;
 import com.easysoft.finance.repository.StockDailyPriceRepository;
 import com.easysoft.finance.repository.StockRepository;
 import com.easysoft.finance.service.PriceService;
@@ -13,7 +13,6 @@ import com.easysoft.utils.Utils;
 import org.apache.commons.collections.IteratorUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
-import org.hsqldb.lib.StringUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -33,7 +32,7 @@ public class TradeController {
     @Autowired
     StockRepository stockRepository;
     @Autowired
-    OrderRepository orderRepository;
+    StockOrderRepository stockOrderRepository;
     @Autowired
     StockDailyPriceRepository stockDailyPriceRepository;
     @Autowired
@@ -97,12 +96,12 @@ public class TradeController {
     ////////////////////////////START ORDER///////////////////////////////////////
     @RequestMapping("trade/order/new")
     public String newOrder(Model model) {
-        model.addAttribute("order", new Order());
+        model.addAttribute("order", new StockOrder());
         return "/trade/order/form";
     }
 
     @RequestMapping(value = "/trade/order", method = RequestMethod.POST)
-    public String saveOrder(Order order) {
+    public String saveOrder(StockOrder order) {
         if (order.getId() == null) {
             order.setCreatedDate(new Date());
             order.setUpdatedDate(new Date());
@@ -115,31 +114,31 @@ public class TradeController {
 //            }
         }
 
-        orderRepository.save(order);
+        stockOrderRepository.save(order);
         return "redirect:/trade/order/" + order.getId();
     }
 
     @RequestMapping("/trade/order/{id}")
     public String viewOrder(@PathVariable Long id, Model model) {
-        model.addAttribute("order", orderRepository.findById(id).get());
+        model.addAttribute("order", stockOrderRepository.findById(id).get());
         return "trade/order/view";
     }
 
     @RequestMapping(value = "/trade/orders", method = RequestMethod.GET)
     public String listOrder(Model model) {
-        model.addAttribute("orders", orderRepository.findAll());
+        model.addAttribute("orders", stockOrderRepository.findAll());
         return "trade/order/orders";
     }
 
     @RequestMapping("trade/order/edit/{id}")
     public String editOrder(@PathVariable Long id, Model model) {
-        model.addAttribute("order", orderRepository.findById(id).get());
+        model.addAttribute("order", stockOrderRepository.findById(id).get());
         return "/trade/order/form";
     }
 
     @RequestMapping("trade/order/delete/{id}")
     public String deleteOrder(@PathVariable Long id) {
-        orderRepository.deleteById(id);
+        stockOrderRepository.deleteById(id);
         return "redirect:/trade/orders";
     }
     ////////////////////////////END ORDER///////////////////////////////////////
