@@ -17,12 +17,13 @@
                 <th>Symbol</th>
                 <th>Date</th>
                 <th>Settlement Date</th>
-                <th>Buy Num</th>
+                <th>Buy Shares</th>
                 <th>Buy Fee</th>
                 <th>Buy Price</th>
-                <th>Sell Num</th>
+                <th>Sell Shares</th>
                 <th>Sell Fee</th>
                 <th>Sell Price</th>
+                <th>Sent Email</th>
                 <th>View</th>
                 <th>Edit</th>
                 <th>Delete</th>
@@ -30,7 +31,7 @@
             <tr th:each="order : ${orders}">
                 <td th:text="${order.id}"><a href="/order/${order.id}">Id</a></td>
                 <td th:text="${order.symbol}">Symbol</td>
-                <td th:text="${order.createdDate}">Date</td>
+                <td th:text="${#dates.format(order.createdDate, 'yyyy-MM-dd')}">Date</td>
                 <td th:text="${order.settlementDate}">Settlement Date</td>
                 <td th:text="${order.buyNum}">Buy Num</td>
                 <td th:text="${order.buyFee}">Buy Fee</td>
@@ -38,6 +39,7 @@
                 <td th:text="${order.sellNum}">Sell Num</td>
                 <td th:text="${order.sellFee}">Sell Fee</td>
                 <td th:text="${order.sellPrice}">Sell Price</td>
+                <td th:text="${order.sent}">Sent Email</td>
                 <td><a th:href="${'/trade/order/' + order.id}">View</a></td>
                 <td><a th:href="${'/trade/order/edit/' + order.id}">Edit</a></td>
                 <td><a th:href="${'/trade/order/delete/' + order.id}">Delete</a></td>

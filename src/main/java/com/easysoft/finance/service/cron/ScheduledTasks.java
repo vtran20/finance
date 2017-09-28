@@ -1,11 +1,14 @@
 package com.easysoft.finance.service.cron;
 
 import com.easysoft.finance.domain.Stock;
+import com.easysoft.finance.domain.StockDailyPrice;
+import com.easysoft.finance.domain.StockOrder;
 import com.easysoft.finance.repository.StockOrderRepository;
 import com.easysoft.finance.repository.StockDailyPriceRepository;
 import com.easysoft.finance.repository.StockRepository;
 import com.easysoft.finance.service.EmailService;
 import com.easysoft.finance.service.PriceService;
+import com.easysoft.utils.Utils;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
@@ -38,7 +41,7 @@ public class ScheduledTasks {
     /**
      * This method will get price from Yahoo Finance and update into each stock on each day. Data of Saturday or Sunday will be stored in last Friday.
      */
-    @Scheduled(cron = "0 */5 0-23 * * ?")
+    @Scheduled(cron = "0 */10 0-23 * * ?")
     public void importDailyPrice() {
 
         //get all stocks
@@ -62,11 +65,23 @@ public class ScheduledTasks {
     }
 
     /**
-     * This method will get price from Yahoo Finance and update into each stock on each day. Data of Saturday or Sunday will be stored in last Friday.
+     * Send email to notify stocks have interest.
      */
-    @Scheduled(cron = "0 5 0-23 * * ?")
+    @Scheduled(cron = "0 */11 0-23 * * ?")
     public void notifyForStockCanBeSold() {
+        List<StockOrder> stockOrders = stockOrderRepository.findActiveOrders();
+        for (StockOrder order: stockOrders) {
+            StockDailyPrice stockDailyPrice = stockDailyPriceRepository.findBySymbolAnDate(order.getSymbol(), Utils.getCurrentDateForStock());
+            double currentPrice = stockDailyPrice.getPrice()*(order.getBuyNum() - order.getSellNum());
+            double orderPrice = order.getBuyPrice()*(order.getBuyNum() - order.getSellNum());
 
-        emailService.sendTextMail("test", "test");
+            double interest = ((currentPrice - orderPrice)*100)/currentPrice;
+            log.info(interest);
+            if (interest > 3) {
+                emailService.sendTextMail("SS", "SS - "+order.getSymbol() + ":"+interest);
+                order.setSent("Y");
+                stockOrderRepository.save(order);
+            }
+        }
     }
 }

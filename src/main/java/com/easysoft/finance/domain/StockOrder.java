@@ -21,21 +21,21 @@ public class StockOrder implements Serializable {
     private String symbol;
 
     @Column(nullable = true)
-    private Long buyNum;
+    private Long buyNum = 0l;
     @Column(nullable = true)
-    private float buyFee;
+    private float buyFee = 0;
     @Column(nullable = true)
-    private float buyPrice;
+    private float buyPrice = 0;
 
+    @Column(nullable = true, columnDefinition="default 0")
+    private Long sellNum = 0l;
     @Column(nullable = true)
-    private Long sellNum;
+    private float sellFee = 0;
     @Column(nullable = true)
-    private float sellFee;
-    @Column(nullable = true)
-    private float sellPrice;
+    private float sellPrice = 0;
 
-    @Column(nullable = true, length = 1)
-    private String sent;
+    @Column(nullable = true, length = 1, columnDefinition="default 'N'")
+    private String sent = "N";
 
     // ... additional members, often include @OneToMany mappings
 

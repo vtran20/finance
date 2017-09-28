@@ -105,16 +105,41 @@ public class TradeController {
         if (order.getId() == null) {
             order.setCreatedDate(new Date());
             order.setUpdatedDate(new Date());
+            stockOrderRepository.save(order);
         } else {
-            //TODO: implement update later
-//            Order o = orderRepository.findById(order.getId()).get();
-//            if (o != null) {
-//                order.setUpdatedDate(new Date());
-//                order.setBuyFee();
-//            }
+            StockOrder o = stockOrderRepository.findById(order.getId()).get();
+            if (o != null) {
+                o.setUpdatedDate(new Date());
+                if (o.getSymbol() != null && !o.getSymbol().equals(order.getSymbol())) {
+                    o.setSymbol(order.getSymbol());
+                }
+                if (o.getSent() != null && !o.getSent().equals(order.getSent())) {
+                    o.setSent(order.getSent());
+                }
+
+                if (o.getBuyNum() != null && !o.getBuyNum().equals(order.getBuyNum())) {
+                    o.setBuyNum(order.getBuyNum());
+                }
+                if (o.getBuyPrice() != order.getBuyPrice()) {
+                    o.setBuyPrice(order.getBuyPrice());
+                }
+                if (o.getBuyFee() != order.getBuyFee()) {
+                    o.setBuyFee(order.getBuyFee());
+                }
+
+                if (o.getSellNum() != null && !o.getSellNum().equals(order.getSellNum())) {
+                    o.setSellNum(order.getSellNum());
+                }
+                if (o.getSellPrice() != order.getSellPrice()) {
+                    o.setSellPrice(order.getSellPrice());
+                }
+                if (o.getSellFee() != order.getSellFee()) {
+                    o.setSellFee(order.getSellFee());
+                }
+                stockOrderRepository.save(o);
+            }
         }
 
-        stockOrderRepository.save(order);
         return "redirect:/trade/order/" + order.getId();
     }
 
