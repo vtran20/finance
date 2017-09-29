@@ -54,10 +54,13 @@ public class TradeController {
                     Stock s = stockRepository.findBySymbol(stock.getSymbol());
                     if (s != null) {
                         stock = s;
-                    } else {
+                    } else { //New Stock
                         stock.setName(st.getName());
                         stock.setExchange(st.getStockExchange());
                         stockRepository.save(stock);
+                        //Load price history
+                        priceService.importHistoryPrice(150, stock.getSymbol());
+
                     }
                 }
 
@@ -168,6 +171,12 @@ public class TradeController {
     }
     ////////////////////////////END ORDER///////////////////////////////////////
 
+    @RequestMapping("trade/stock/reload/{symbol}")
+    public String reloadPrice(@PathVariable String symbol) {
+        priceService.importHistoryPrice(150, symbol);
+        return "redirect:/diffndays";
+    }
+
     @RequestMapping("/diffndays")
     public String stockPrice(Model model) {
                 Iterator<Stock> stocks = stockRepository.findAll().iterator();
@@ -191,6 +200,7 @@ public class TradeController {
         });
 
         model.addAttribute("stockPriceHistories", stockPriceHistories);
+        model.addAttribute("trades", getTradeMap());
         return "diffndays.html";
     }
     @RequestMapping("/")
@@ -217,6 +227,7 @@ public class TradeController {
 
 
         model.addAttribute("stockPriceHistories", stockPriceHistories);
+        model.addAttribute("trades", getTradeMap());
         return "index.html";
     }
 
@@ -228,6 +239,13 @@ public class TradeController {
         return "backup/stockdailyprice";
     }
 
+    public Map getTradeMap () {
+        Map<String, String> trades = new HashMap<>();
+        for (Stock stock : stockRepository.findAll()) {
+            trades.put(stock.getSymbol(), stock.getName());
+        }
+        return trades;
+    }
 
     @RequestMapping(value = "stocks.json", method = RequestMethod.GET)
     public

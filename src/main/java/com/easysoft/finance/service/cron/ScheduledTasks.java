@@ -72,15 +72,17 @@ public class ScheduledTasks {
         List<StockOrder> stockOrders = stockOrderRepository.findActiveOrders();
         for (StockOrder order: stockOrders) {
             StockDailyPrice stockDailyPrice = stockDailyPriceRepository.findBySymbolAnDate(order.getSymbol(), Utils.getCurrentDateForStock());
-            double currentPrice = stockDailyPrice.getPrice()*(order.getBuyNum() - order.getSellNum());
-            double orderPrice = order.getBuyPrice()*(order.getBuyNum() - order.getSellNum());
+            if (stockDailyPrice != null) {
+                double currentPrice = stockDailyPrice.getPrice()*(order.getBuyNum() - order.getSellNum());
+                double orderPrice = order.getBuyPrice()*(order.getBuyNum() - order.getSellNum());
 
-            double interest = ((currentPrice - orderPrice)*100)/currentPrice;
-            log.info(interest);
-            if (interest > 3) {
-                emailService.sendTextMail("SS", "SS - "+order.getSymbol() + ":"+interest);
-                order.setSent("Y");
-                stockOrderRepository.save(order);
+                double interest = ((currentPrice - orderPrice)*100)/currentPrice;
+                log.info(interest);
+                if (interest > 3) {
+                    emailService.sendTextMail("SS", "SS - "+order.getSymbol() + ":"+interest);
+                    order.setSent("Y");
+                    stockOrderRepository.save(order);
+                }
             }
         }
     }

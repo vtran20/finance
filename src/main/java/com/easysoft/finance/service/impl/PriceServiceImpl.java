@@ -87,6 +87,34 @@ public class PriceServiceImpl implements PriceService {
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+    /**
+     * Import history stock daily price before numberOfDay to the current day for specific Stock
+     *
+     * @param numberOfDay
+     * @param symbol
+     */
+    public void importHistoryPrice (int numberOfDay, String symbol) {
+        try {
+            Calendar calendar = Utils.getCalendarWithoutTime();
+            calendar.add(Calendar.DAY_OF_YEAR, -numberOfDay);
+            yahoofinance.Stock stock = YahooFinance.get(symbol, calendar, Interval.DAILY);
+            for (HistoricalQuote quote : stock.getHistory()) {
+                Date date = Utils.getCurrentDateForStock(quote.getDate().getTime());
+                StockDailyPrice stockDailyPrice = stockDailyPriceRepository.findBySymbolAnDate(stock.getSymbol(), date);
+                if (stockDailyPrice == null) {
+                    stockDailyPrice = new StockDailyPrice();
+                    stockDailyPrice.setSymbol(stock.getSymbol());
+                    stockDailyPrice.setPrice(quote.getClose().doubleValue());
+                    stockDailyPrice.setDate(date);
+                } else {
+                    stockDailyPrice.setPrice(quote.getClose().doubleValue());
+                }
+                stockDailyPriceRepository.save(stockDailyPrice);
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
 
     }
 
