@@ -16,10 +16,8 @@ import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.util.MultiValueMap;
+import org.springframework.web.bind.annotation.*;
 import yahoofinance.YahooFinance;
 
 import java.io.IOException;
@@ -204,7 +202,8 @@ public class TradeController {
         return "diffndays.html";
     }
     @RequestMapping("/")
-    public String stockDiff1DayPrice(Model model) {
+    public String stockDiff1DayPrice(Model model, @RequestParam(required=false,name="sort") String sort) {
+
                 Iterator<Stock> stocks = stockRepository.findAll().iterator();
         List<StockPriceDiff1DayHistory> stockPriceHistories = new ArrayList<>();
         while (stocks.hasNext()) {
@@ -217,14 +216,23 @@ public class TradeController {
             stockPriceHistories.add(stockPriceHistory);
         }
 
-        Collections.sort(stockPriceHistories, new Comparator<StockPriceDiff1DayHistory>() {
-            @Override
-            public int compare(StockPriceDiff1DayHistory lhs, StockPriceDiff1DayHistory rhs) {
-                // -1 - less than, 1 - greater than, 0 - equal, all inversed for descending
-                return lhs.getNegativeAmount() > rhs.getNegativeAmount() ? 1 : -1;
-            }
-        });
-
+        if ("Y".equals(sort)) {
+            Collections.sort(stockPriceHistories, new Comparator<StockPriceDiff1DayHistory>() {
+                @Override
+                public int compare(StockPriceDiff1DayHistory lhs, StockPriceDiff1DayHistory rhs) {
+                    // -1 - less than, 1 - greater than, 0 - equal, all inversed for descending
+                    return lhs.getDiff1() > rhs.getDiff1() ? 1 : -1;
+                }
+            });
+        } else {
+            Collections.sort(stockPriceHistories, new Comparator<StockPriceDiff1DayHistory>() {
+                @Override
+                public int compare(StockPriceDiff1DayHistory lhs, StockPriceDiff1DayHistory rhs) {
+                    // -1 - less than, 1 - greater than, 0 - equal, all inversed for descending
+                    return lhs.getNegativeAmount() > rhs.getNegativeAmount() ? 1 : -1;
+                }
+            });
+        }
 
         model.addAttribute("stockPriceHistories", stockPriceHistories);
         model.addAttribute("trades", getTradeMap());

@@ -43,6 +43,9 @@ public class PriceServiceImpl implements PriceService {
         }
         stockDailyPriceRepository.save(stockDailyPrice);
 
+//        System.out.println("getSymbol:"+stock.getSymbol());
+//        System.out.println("getSymbol:"+stock.getDividend().toString());
+//        System.out.println("=============================");
     }
 
     @Override
