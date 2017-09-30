@@ -37,7 +37,7 @@
                 <th>20</th>
             </tr>
             <tr th:each="stock : ${stockPriceHistories}">
-                <td th:text="${stock.symbol}" th:title="${trades[__${stock.symbol}__]}"></td>
+                <td><a th:href="${'/trade/stock/history?symbol='+stock.symbol}" th:text="${stock.symbol}" th:title="${trades[__${stock.symbol}__]}">Symbol</a></td>
                 <td th:text="${#numbers.formatDecimal(stock.currPrice, 1, 2)}"></td>
                 <td th:text="${#numbers.formatDecimal(stock.getNegativeAmount(), 1, 2)}"></td>
                 <td th:style="${stock.diff1 > 0? 'background:green;color: white':stock.diff1 == 0? 'background:blue;color: white':'background:red;color: white'}"  th:text="${#numbers.formatDecimal(stock.diff1, 1, 2)}"></td>

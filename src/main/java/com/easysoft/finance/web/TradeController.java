@@ -175,6 +175,55 @@ public class TradeController {
         return "redirect:/diffndays";
     }
 
+    @RequestMapping("trade/stock/history")
+    public String stockDetailHistory(Model model, @RequestParam(required=false,name="symbol") String [] symbols) {
+        if (symbols != null) {
+            List<StockPriceDiff1DayHistory> stockPriceHistories = new ArrayList<>();
+            List<StockPriceHistory> stockPriceDiffNDays = new ArrayList<>();
+            for (String symbol : symbols) {
+                Stock stock = stockRepository.findBySymbol(symbol);
+
+                Calendar calendar = Utils.getCalendarWithoutTime();
+                Calendar startCalendar = Utils.getCalendarWithoutTime();
+                startCalendar.add(Calendar.DAY_OF_YEAR, -150);
+                List<StockDailyPrice> stockDailyPrices = stockDailyPriceRepository.findBySymbolAnDate(symbol, startCalendar.getTime(), calendar.getTime());
+
+
+                //History price different each day
+                StockPriceDiff1DayHistory stockPriceDiff1DayHistory = new StockPriceDiff1DayHistory(stockDailyPrices);
+                stockPriceHistories.add(stockPriceDiff1DayHistory);
+
+                //History price different N days
+                StockPriceHistory stockPriceHistory = new StockPriceHistory(stockDailyPrices);
+                stockPriceDiffNDays.add(stockPriceHistory);
+
+                model.addAttribute("stock", stock);
+                model.addAttribute("stockPriceHistories", stockPriceHistories);
+                model.addAttribute("stockPriceDiffNDays", stockPriceDiffNDays);
+
+                String days = "";
+                String prices = "";
+                for (int i=100; i >= 0; i--) {
+                    StockDailyPrice sp = stockDailyPrices.get(i);
+                    if ("".equals(days)) {
+                        days = String.valueOf(i);
+                    } else {
+                        days = days + "," + String.valueOf(i)  ;
+                    }
+                    if ("".equals(prices)) {
+                        prices = String.valueOf(sp.getPrice());
+                    } else {
+                        prices = prices + "," + String.valueOf(sp.getPrice());
+                    }
+                }
+                model.addAttribute("days", "["+days+"]");
+                model.addAttribute("prices", "["+prices+"]");
+
+            }
+        }
+        return "/trade/stock/history.html";
+    }
+
     @RequestMapping("/diffndays")
     public String stockPrice(Model model) {
                 Iterator<Stock> stocks = stockRepository.findAll().iterator();
