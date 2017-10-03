@@ -30,7 +30,7 @@
             </tr>
             <tr th:each="order : ${orders}">
                 <td th:text="${order.id}"><a href="/order/${order.id}">Id</a></td>
-                <td th:text="${order.symbol}">Symbol</td>
+                <td><a th:href="${'/trade/stock/history?symbol='+order.symbol}" th:text="${order.symbol}">Symbol</a></td>
                 <td th:text="${#dates.format(order.createdDate, 'yyyy-MM-dd')}">Date</td>
                 <td th:text="${order.settlementDate}">Settlement Date</td>
                 <td th:text="${order.buyNum}">Buy Num</td>

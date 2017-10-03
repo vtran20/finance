@@ -251,7 +251,7 @@ public class TradeController {
         return "diffndays.html";
     }
     @RequestMapping("/")
-    public String stockDiff1DayPrice(Model model, @RequestParam(required=false,name="sort") String sort) {
+    public String stockDiff1DayPrice(Model model, @RequestParam(required=false,name="sort") String sort, @RequestParam(required=false,name="diff") Integer diff) {
 
                 Iterator<Stock> stocks = stockRepository.findAll().iterator();
         List<StockPriceDiff1DayHistory> stockPriceHistories = new ArrayList<>();
@@ -262,6 +262,9 @@ public class TradeController {
             startCalendar.add(Calendar.DAY_OF_YEAR, -50);
             List<StockDailyPrice> stockDailyPrices = stockDailyPriceRepository.findBySymbolAnDate(stock.getSymbol(), startCalendar.getTime(), calendar.getTime());
             StockPriceDiff1DayHistory stockPriceHistory = new StockPriceDiff1DayHistory(stockDailyPrices);
+            if (diff != null && diff>0) {
+                stockPriceHistory.setTotalPercentDiff(diff);
+            }
             stockPriceHistories.add(stockPriceHistory);
         }
 

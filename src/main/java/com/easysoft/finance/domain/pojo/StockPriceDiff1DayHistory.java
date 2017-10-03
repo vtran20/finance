@@ -14,6 +14,7 @@ public class StockPriceDiff1DayHistory {
     private List<StockDailyPrice> stockDailyPrices;
     private List<Double> priceHistory = new ArrayList<Double>();
     private String symbol;
+    private int totalPercentDiff = 5;
 
     /*Get %diff price between the current date and previous day*/
     private double currPrice = 0;
@@ -210,15 +211,13 @@ public class StockPriceDiff1DayHistory {
      * @return
      */
     public double getNegativeAmount() {
-        int num = 5;
         double negativeAmount = 0;
-        if (sortList.size() >5) {
-            negativeAmount += sortList.get(0);
-            negativeAmount += sortList.get(1);
-            negativeAmount += sortList.get(2);
-            negativeAmount += sortList.get(3);
-            negativeAmount += sortList.get(4);
-            for (int i=5; i < sortList.size(); i++) {
+        if (sortList.size() > totalPercentDiff) {
+            for (int i=0; i < totalPercentDiff; i++) {
+                negativeAmount += sortList.get(i);
+            }
+
+            for (int i=totalPercentDiff; i < sortList.size(); i++) {
                 double value = sortList.get(i);
                 if (value <= 0) {
                     negativeAmount += value;
@@ -503,5 +502,13 @@ public class StockPriceDiff1DayHistory {
 
     public void setDiff30(double diff30) {
         this.diff30 = diff30;
+    }
+
+    public int getTotalPercentDiff() {
+        return totalPercentDiff;
+    }
+
+    public void setTotalPercentDiff(int totalPercentDiff) {
+        this.totalPercentDiff = totalPercentDiff;
     }
 }
