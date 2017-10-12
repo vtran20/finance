@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <head lang="en">
 
 </head>
@@ -12,11 +12,15 @@
                 <div class="navbar-header">
                     <a class="navbar-brand" href="#" th:href="@{/}">Home</a>
                     <ul class="nav navbar-nav">
-                        <li><a href="#" th:href="@{/diffndays}">Diff N Days</a></li>
-                        <li><a href="#" th:href="@{/trade/stocks}">Stocks</a></li>
-                        <li><a href="#" th:href="@{/trade/stock/new}">Add Stock</a></li>
-                        <li><a href="#" th:href="@{/trade/orders}">Orders</a></li>
-                        <li><a href="#" th:href="@{/trade/order/new}">Add Order</a></li>
+                        <li><a href="#" th:href="@{/suggestion}" sec:authorize="hasRole('ROLE_ADMIN')">Suggestion</a></li>
+                        <li><a href="#" th:href="@{/diffndays}" sec:authorize="hasRole('ROLE_ADMIN')">Diff N Days</a></li>
+                        <li><a href="#" th:href="@{/trade/stocks}" sec:authorize="hasRole('ROLE_ADMIN')">Stocks</a></li>
+                        <li><a href="#" th:href="@{/trade/stock/new}" sec:authorize="hasRole('ROLE_ADMIN')">Add Stock</a></li>
+                        <li><a href="#" th:href="@{/trade/orders}" sec:authorize="hasRole('ROLE_ADMIN')">Orders</a></li>
+                        <li><a href="#" th:href="@{/trade/order/new}" sec:authorize="hasRole('ROLE_ADMIN')">Add Order</a></li>
+                        <li><a href="#" th:href="@{/reload}" sec:authorize="hasRole('ROLE_ADMIN')">Reload Price</a></li>
+                        <li sec:authorize="!isAuthenticated()"><a href="#" th:href="@{/login}">Login</a></li>
+                        <li sec:authorize="isAuthenticated()"><a href="#" th:href="@{/logout}">Logout</a></li>
                     </ul>
 
                 </div>

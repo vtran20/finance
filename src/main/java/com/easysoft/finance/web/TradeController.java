@@ -9,6 +9,7 @@ import com.easysoft.finance.repository.StockOrderRepository;
 import com.easysoft.finance.repository.StockDailyPriceRepository;
 import com.easysoft.finance.repository.StockRepository;
 import com.easysoft.finance.service.PriceService;
+import com.easysoft.finance.service.cron.ScheduledTasks;
 import com.easysoft.utils.Utils;
 import org.apache.commons.collections.IteratorUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -35,6 +36,8 @@ public class TradeController {
     StockDailyPriceRepository stockDailyPriceRepository;
     @Autowired
     PriceService priceService;
+    @Autowired
+    ScheduledTasks scheduledTasks;
 
     ////////////////////////////START STOCK///////////////////////////////////////
     @RequestMapping("trade/stock/new")
@@ -291,7 +294,50 @@ public class TradeController {
         return "index.html";
     }
 
-    ///////////////////////////BACK UP/////////////////////////////////////////
+    /**
+     * Suggest buying stock based on these features:
+     * - Decrease price today (x2): x
+     * - Decrease price last 5 recent days: y
+     * - Decrease price last 10 recent days: z
+     *
+     * Rating = 2x + y + z
+     *
+     * @return
+     */
+    @RequestMapping("/suggestion")
+    public String stockSuggestion(Model model) {
+        Iterator<Stock> stocks = stockRepository.findAll().iterator();
+        List<StockPriceDiff1DayHistory> stockPriceHistories = new ArrayList<>();
+        while (stocks.hasNext()) {
+            Stock stock = stocks.next();
+            Calendar calendar = Utils.getCalendarWithoutTime();
+            Calendar startCalendar = Utils.getCalendarWithoutTime();
+            startCalendar.add(Calendar.DAY_OF_YEAR, -50);
+            List<StockDailyPrice> stockDailyPrices = stockDailyPriceRepository.findBySymbolAnDate(stock.getSymbol(), startCalendar.getTime(), calendar.getTime());
+            StockPriceDiff1DayHistory stockPriceHistory = new StockPriceDiff1DayHistory(stockDailyPrices);
+            stockPriceHistories.add(stockPriceHistory);
+        }
+        Collections.sort(stockPriceHistories, new Comparator<StockPriceDiff1DayHistory>() {
+            @Override
+            public int compare(StockPriceDiff1DayHistory lhs, StockPriceDiff1DayHistory rhs) {
+                // -1 - less than, 1 - greater than, 0 - equal, all inversed for descending
+                return lhs.getTotalDecrease() > rhs.getTotalDecrease() ? 1 : -1;
+            }
+        });
+
+        model.addAttribute("stockPriceHistories", stockPriceHistories);
+        model.addAttribute("trades", getTradeMap());
+        return "index.html";
+
+    }
+    @RequestMapping("/reload")
+    public String stockDiff1DayPrice() {
+        scheduledTasks.importDailyPrice();
+        return "redirect:/";
+    }
+
+
+        ///////////////////////////BACK UP/////////////////////////////////////////
 
     @RequestMapping(value = "/trade/stockdailyprice", method = RequestMethod.GET)
     public String listStockDailyPrice(Model model) {
@@ -306,6 +352,14 @@ public class TradeController {
         }
         return trades;
     }
+
+    //////////////////////////////////Login/Logout///////////////////////////////////
+    @RequestMapping(value = "/login", method = RequestMethod.GET)
+    public String login(){
+        return "login";
+    }
+
+
 
     @RequestMapping(value = "stocks.json", method = RequestMethod.GET)
     public

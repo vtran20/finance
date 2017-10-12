@@ -15,6 +15,15 @@ public class StockPriceDiff1DayHistory {
     private List<Double> priceHistory = new ArrayList<Double>();
     private String symbol;
     private int totalPercentDiff = 5;
+    /**
+     * Suggest buying stock based on these features:
+     * - Decrease price today (x2): x
+     * - Decrease price last 5 recent days: y
+     * - Decrease price last 10 recent days: z
+     *
+     * Rating = 2x + y + z
+    */
+     private double totalDecrease = 0;
 
     /*Get %diff price between the current date and previous day*/
     private double currPrice = 0;
@@ -202,6 +211,8 @@ public class StockPriceDiff1DayHistory {
         sortList.add(diff29);
         sortList.add(diff30);
 
+        /*Total decrease: Value = 2x + y + z*/
+        totalDecrease = 2*diff1 + getDecreaseAmount(5) + getDecreaseAmount(10);
     }
 
     /**
@@ -218,6 +229,24 @@ public class StockPriceDiff1DayHistory {
             }
 
             for (int i=totalPercentDiff; i < sortList.size(); i++) {
+                double value = sortList.get(i);
+                if (value <= 0) {
+                    negativeAmount += value;
+                } else {
+                    break;
+                }
+            }
+        }
+        return negativeAmount;
+    }
+    public double getDecreaseAmount(int days) {
+        double negativeAmount = 0;
+        if (sortList.size() > days) {
+            for (int i=0; i < days; i++) {
+                negativeAmount += sortList.get(i);
+            }
+
+            for (int i=days; i < sortList.size(); i++) {
                 double value = sortList.get(i);
                 if (value <= 0) {
                     negativeAmount += value;
@@ -510,5 +539,13 @@ public class StockPriceDiff1DayHistory {
 
     public void setTotalPercentDiff(int totalPercentDiff) {
         this.totalPercentDiff = totalPercentDiff;
+    }
+
+    public double getTotalDecrease() {
+        return totalDecrease;
+    }
+
+    public void setTotalDecrease(double totalDecrease) {
+        this.totalDecrease = totalDecrease;
     }
 }
