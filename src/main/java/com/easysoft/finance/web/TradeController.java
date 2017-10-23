@@ -15,6 +15,10 @@ import org.apache.commons.collections.IteratorUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.social.connect.ConnectionRepository;
+import org.springframework.social.facebook.api.Facebook;
+import org.springframework.social.facebook.api.PagedList;
+import org.springframework.social.facebook.api.Post;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.util.MultiValueMap;
@@ -39,6 +43,10 @@ public class TradeController {
     @Autowired
     ScheduledTasks scheduledTasks;
 
+    @Autowired
+    private Facebook facebook;
+    @Autowired
+    private ConnectionRepository connectionRepository;
     ////////////////////////////START STOCK///////////////////////////////////////
     @RequestMapping("trade/stock/new")
     public String newStock(Model model) {
@@ -342,7 +350,7 @@ public class TradeController {
     @RequestMapping(value = "/trade/stockdailyprice", method = RequestMethod.GET)
     public String listStockDailyPrice(Model model) {
         model.addAttribute("stockdailyprices", stockDailyPriceRepository.findAll());
-        return "backup/stockdailyprice";
+        return "connect/stockdailyprice";
     }
 
     public Map getTradeMap () {
@@ -360,6 +368,18 @@ public class TradeController {
     }
 
 
+    ///////////////////////Facebook Connect//////////////////////////////////////////
+    @RequestMapping(value = "/facebook", method = RequestMethod.GET)
+    public String helloFacebook(Model model) {
+        if (connectionRepository.findPrimaryConnection(Facebook.class) == null) {
+            return "redirect:/connect/facebookConnect.html";
+        }
+
+        model.addAttribute("facebookProfile", facebook.userOperations().getUserProfile());
+        PagedList<Post> feed = facebook.feedOperations().getFeed();
+        model.addAttribute("feed", feed);
+        return "hello";
+    }
 
     @RequestMapping(value = "stocks.json", method = RequestMethod.GET)
     public
