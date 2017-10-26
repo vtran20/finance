@@ -89,95 +89,95 @@ public class StockPriceDiff1DayHistory {
             }
         }
 
-        if (priceHistory.size() > 1 && priceHistory.get(0) > 0) {
-            diff1 = ((priceHistory.get(0) - priceHistory.get(1))*100)/priceHistory.get(0);
+        if (priceHistory.size() > 1 && priceHistory.get(1) > 0) {
+            diff1 = ((priceHistory.get(0)*100)/priceHistory.get(1)) - 100;
         }
-        if (priceHistory.size() > 2 && priceHistory.get(1) > 0) {
-            diff2 = ((priceHistory.get(1) - priceHistory.get(2))*100)/priceHistory.get(1);
+        if (priceHistory.size() > 2 && priceHistory.get(2) > 0) {
+            diff2 = ((priceHistory.get(1)*100)/priceHistory.get(2)) - 100;
         }
-        if (priceHistory.size() > 3 && priceHistory.get(2) > 0) {
-            diff3 = ((priceHistory.get(2) - priceHistory.get(3))*100)/priceHistory.get(2);
+        if (priceHistory.size() > 3 && priceHistory.get(3) > 0) {
+            diff3 = ((priceHistory.get(2)*100)/priceHistory.get(3)) - 100;
         }
-        if (priceHistory.size() > 4 && priceHistory.get(3) > 0) {
-            diff4 = ((priceHistory.get(3) - priceHistory.get(4))*100)/priceHistory.get(3);
+        if (priceHistory.size() > 4 && priceHistory.get(4) > 0) {
+            diff4 = ((priceHistory.get(3)*100)/priceHistory.get(4)) - 100;
         }
-        if (priceHistory.size() > 5 && priceHistory.get(4) > 0) {
-            diff5 = ((priceHistory.get(4) - priceHistory.get(5))*100)/priceHistory.get(4);
+        if (priceHistory.size() > 5 && priceHistory.get(5) > 0) {
+            diff5 = ((priceHistory.get(4)*100)/priceHistory.get(5)) - 100;
         }
-        if (priceHistory.size() > 6 && priceHistory.get(5) > 0) {
-            diff6 = ((priceHistory.get(5) - priceHistory.get(6))*100)/priceHistory.get(5);
+        if (priceHistory.size() > 6 && priceHistory.get(6) > 0) {
+            diff6 = ((priceHistory.get(5)*100)/priceHistory.get(6)) - 100;
         }
-        if (priceHistory.size() > 7 && priceHistory.get(6) > 0) {
-            diff7 = ((priceHistory.get(6) - priceHistory.get(7))*100)/priceHistory.get(6);
+        if (priceHistory.size() > 7 && priceHistory.get(7) > 0) {
+            diff7 = ((priceHistory.get(6)*100)/priceHistory.get(7)) - 100;
         }
-        if (priceHistory.size() > 8 && priceHistory.get(7) > 0) {
-            diff8 = ((priceHistory.get(7) - priceHistory.get(8))*100)/priceHistory.get(7);
+        if (priceHistory.size() > 8 && priceHistory.get(8) > 0) {
+            diff8 = ((priceHistory.get(7)*100)/priceHistory.get(8)) - 100;
         }
-        if (priceHistory.size() > 9 && priceHistory.get(8) > 0) {
-            diff9 = ((priceHistory.get(8) - priceHistory.get(9))*100)/priceHistory.get(8);
+        if (priceHistory.size() > 9 && priceHistory.get(9) > 0) {
+            diff9 = ((priceHistory.get(8)*100)/priceHistory.get(9)) - 100;
         }
-        if (priceHistory.size() > 10 && priceHistory.get(9) > 0) {
-            diff10 = ((priceHistory.get(9) - priceHistory.get(10))*100)/priceHistory.get(9);
+        if (priceHistory.size() > 10 && priceHistory.get(10) > 0) {
+            diff10 = ((priceHistory.get(9)*100)/priceHistory.get(10)) - 100;
         }
-        if (priceHistory.size() > 11 && priceHistory.get(10) > 0) {
-            diff11 = ((priceHistory.get(10) - priceHistory.get(11))*100)/priceHistory.get(10);
+        if (priceHistory.size() > 11 && priceHistory.get(11) > 0) {
+            diff11 = ((priceHistory.get(10)*100)/priceHistory.get(11)) - 100;
         }
-        if (priceHistory.size() > 12 && priceHistory.get(11) > 0) {
-            diff12 = ((priceHistory.get(11) - priceHistory.get(12))*100)/priceHistory.get(11);
+        if (priceHistory.size() > 12 && priceHistory.get(12) > 0) {
+            diff12 = ((priceHistory.get(11)*100)/priceHistory.get(12)) - 100;
         }
-        if (priceHistory.size() > 13 && priceHistory.get(12) > 0) {
-            diff13 = ((priceHistory.get(12) - priceHistory.get(13))*100)/priceHistory.get(12);
+        if (priceHistory.size() > 13 && priceHistory.get(13) > 0) {
+            diff13 = ((priceHistory.get(12)*100)/priceHistory.get(13)) - 100;
         }
-        if (priceHistory.size() > 14 && priceHistory.get(13) > 0) {
-            diff14 = ((priceHistory.get(13) - priceHistory.get(14))*100)/priceHistory.get(13);
+        if (priceHistory.size() > 14 && priceHistory.get(14) > 0) {
+            diff14 = ((priceHistory.get(13)*100)/priceHistory.get(14)) - 100;
         }
-        if (priceHistory.size() > 15 && priceHistory.get(14) > 0) {
-            diff15 = ((priceHistory.get(14) - priceHistory.get(15))*100)/priceHistory.get(14);
+        if (priceHistory.size() > 15 && priceHistory.get(15) > 0) {
+            diff15 = ((priceHistory.get(14)*100)/priceHistory.get(15)) - 100;
         }
-        if (priceHistory.size() > 16 && priceHistory.get(15) > 0) {
-            diff16 = ((priceHistory.get(15) - priceHistory.get(16))*100)/priceHistory.get(15);
+        if (priceHistory.size() > 16 && priceHistory.get(16) > 0) {
+            diff16 = ((priceHistory.get(15)*100)/priceHistory.get(16)) - 100;
         }
-        if (priceHistory.size() > 17 && priceHistory.get(16) > 0) {
-            diff17 = ((priceHistory.get(16) - priceHistory.get(17))*100)/priceHistory.get(16);
+        if (priceHistory.size() > 17 && priceHistory.get(17) > 0) {
+            diff17 = ((priceHistory.get(16)*100)/priceHistory.get(17)) - 100;
         }
-        if (priceHistory.size() > 18 && priceHistory.get(17) > 0) {
-            diff18 = ((priceHistory.get(17) - priceHistory.get(18))*100)/priceHistory.get(17);
+        if (priceHistory.size() > 18 && priceHistory.get(18) > 0) {
+            diff18 = ((priceHistory.get(17)*100)/priceHistory.get(18)) - 100;
         }
-        if (priceHistory.size() > 19 && priceHistory.get(18) > 0) {
-            diff19 = ((priceHistory.get(18) - priceHistory.get(19))*100)/priceHistory.get(18);
+        if (priceHistory.size() > 19 && priceHistory.get(19) > 0) {
+            diff19 = ((priceHistory.get(18)*100)/priceHistory.get(19)) - 100;
         }
-        if (priceHistory.size() > 20 && priceHistory.get(19) > 0) {
-            diff20 = ((priceHistory.get(19) - priceHistory.get(20))*100)/priceHistory.get(19);
+        if (priceHistory.size() > 20 && priceHistory.get(20) > 0) {
+            diff20 = ((priceHistory.get(19)*100)/priceHistory.get(20)) - 100;
         }
-        if (priceHistory.size() > 21 && priceHistory.get(20) > 0) {
-            diff21 = ((priceHistory.get(20) - priceHistory.get(21))*100)/priceHistory.get(20);
+        if (priceHistory.size() > 21 && priceHistory.get(21) > 0) {
+            diff21 = ((priceHistory.get(20)*100)/priceHistory.get(21)) - 100;
         }
-        if (priceHistory.size() > 22 && priceHistory.get(21) > 0) {
-            diff22 = ((priceHistory.get(21) - priceHistory.get(22))*100)/priceHistory.get(21);
+        if (priceHistory.size() > 22 && priceHistory.get(22) > 0) {
+            diff22 = ((priceHistory.get(21)*100)/priceHistory.get(22)) - 100;
         }
-        if (priceHistory.size() > 23 && priceHistory.get(22) > 0) {
-            diff23 = ((priceHistory.get(22) - priceHistory.get(23))*100)/priceHistory.get(22);
+        if (priceHistory.size() > 23 && priceHistory.get(23) > 0) {
+            diff23 = ((priceHistory.get(22)*100)/priceHistory.get(23)) - 100;
         }
-        if (priceHistory.size() > 24 && priceHistory.get(23) > 0) {
-            diff24 = ((priceHistory.get(23) - priceHistory.get(24))*100)/priceHistory.get(23);
+        if (priceHistory.size() > 24 && priceHistory.get(24) > 0) {
+            diff24 = ((priceHistory.get(23)*100)/priceHistory.get(24)) - 100;
         }
-        if (priceHistory.size() > 25 && priceHistory.get(24) > 0) {
-            diff25 = ((priceHistory.get(24) - priceHistory.get(25))*100)/priceHistory.get(24);
+        if (priceHistory.size() > 25 && priceHistory.get(25) > 0) {
+            diff25 = ((priceHistory.get(24)*100)/priceHistory.get(25)) - 100;
         }
-        if (priceHistory.size() > 26 && priceHistory.get(25) > 0) {
-            diff26 = ((priceHistory.get(25) - priceHistory.get(26))*100)/priceHistory.get(25);
+        if (priceHistory.size() > 26 && priceHistory.get(26) > 0) {
+            diff26 = ((priceHistory.get(25)*100)/priceHistory.get(26)) - 100;
         }
-        if (priceHistory.size() > 27 && priceHistory.get(26) > 0) {
-            diff27 = ((priceHistory.get(26) - priceHistory.get(27))*100)/priceHistory.get(26);
+        if (priceHistory.size() > 27 && priceHistory.get(27) > 0) {
+            diff27 = ((priceHistory.get(26)*100)/priceHistory.get(27)) - 100;
         }
-        if (priceHistory.size() > 28 && priceHistory.get(27) > 0) {
-            diff28 = ((priceHistory.get(27) - priceHistory.get(28))*100)/priceHistory.get(27);
+        if (priceHistory.size() > 28 && priceHistory.get(28) > 0) {
+            diff28 = ((priceHistory.get(27)*100)/priceHistory.get(28)) - 100;
         }
-        if (priceHistory.size() > 29 && priceHistory.get(28) > 0) {
-            diff29 = ((priceHistory.get(28) - priceHistory.get(29))*100)/priceHistory.get(28);
+        if (priceHistory.size() > 29 && priceHistory.get(29) > 0) {
+            diff29 = ((priceHistory.get(28)*100)/priceHistory.get(29)) - 100;
         }
-        if (priceHistory.size() > 30 && priceHistory.get(29) > 0) {
-            diff30 = ((priceHistory.get(29) - priceHistory.get(30))*100)/priceHistory.get(29);
+        if (priceHistory.size() > 30 && priceHistory.get(30) > 0) {
+            diff30 = ((priceHistory.get(29)*100)/priceHistory.get(30)) - 100;
         }
 
         sortList.add(diff1);

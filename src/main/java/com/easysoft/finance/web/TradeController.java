@@ -68,7 +68,7 @@ public class TradeController {
                         stock.setExchange(st.getStockExchange());
                         stockRepository.save(stock);
                         //Load price history
-                        priceService.importHistoryPrice(150, stock.getSymbol());
+                        priceService.importHistoryPrice(200, stock.getSymbol());
 
                     }
                 }

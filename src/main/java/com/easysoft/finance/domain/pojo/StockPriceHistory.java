@@ -68,55 +68,53 @@ public class StockPriceHistory {
             }
         }
 
-        if (priceHistory.size() > 0 && priceHistory.get(0) > 0) {
-            if (priceHistory.size() > 1) {
-                diff1day = ((priceHistory.get(0) - priceHistory.get(1))*100)/priceHistory.get(0);
-            }
-            if (priceHistory.size() > 2) {
-                diff2days = ((priceHistory.get(0) - priceHistory.get(2))*100)/priceHistory.get(0);
-            }
-            if (priceHistory.size() > 3) {
-                diff3days = ((priceHistory.get(0) - priceHistory.get(3))*100)/priceHistory.get(0);
-            }
-            if (priceHistory.size() > 4) {
-                diff4days = ((priceHistory.get(0) - priceHistory.get(4))*100)/priceHistory.get(0);
-            }
-            if (priceHistory.size() > 5) {
-                diff5days = ((priceHistory.get(0) - priceHistory.get(5))*100)/priceHistory.get(0);
-            }
-            if (priceHistory.size() > 10) {
-                diff10days = ((priceHistory.get(0) - priceHistory.get(10))*100)/priceHistory.get(0);
-            }
-            if (priceHistory.size() > 15) {
-                diff15days = ((priceHistory.get(0) - priceHistory.get(15))*100)/priceHistory.get(0);
-            }
-            if (priceHistory.size() > 20) {
-                diff20days = ((priceHistory.get(0) - priceHistory.get(20))*100)/priceHistory.get(0);
-            }
-            if (priceHistory.size() > 30) {
-                diff30days = ((priceHistory.get(0) - priceHistory.get(30))*100)/priceHistory.get(0);
-            }
-            if (priceHistory.size() > 40) {
-                diff40days = ((priceHistory.get(0) - priceHistory.get(40))*100)/priceHistory.get(0);
-            }
-            if (priceHistory.size() > 50) {
-                diff50days = ((priceHistory.get(0) - priceHistory.get(50))*100)/priceHistory.get(0);
-            }
-            if (priceHistory.size() > 60) {
-                diff60days = ((priceHistory.get(0) - priceHistory.get(60))*100)/priceHistory.get(0);
-            }
-            if (priceHistory.size() > 70) {
-                diff70days = ((priceHistory.get(0) - priceHistory.get(70))*100)/priceHistory.get(0);
-            }
-            if (priceHistory.size() > 80) {
-                diff80days = ((priceHistory.get(0) - priceHistory.get(80))*100)/priceHistory.get(0);
-            }
-            if (priceHistory.size() > 90) {
-                diff90days = ((priceHistory.get(0) - priceHistory.get(90))*100)/priceHistory.get(0);
-            }
-            if (priceHistory.size() > 100) {
-                diff100days = ((priceHistory.get(0) - priceHistory.get(100))*100)/priceHistory.get(0);
-            }
+        if (priceHistory.size() > 1 && priceHistory.get(1) > 0) {
+            diff1day = ((priceHistory.get(0)*100)/priceHistory.get(1)) - 100;
+        }
+        if (priceHistory.size() > 2 && priceHistory.get(2) > 0) {
+            diff2days = ((priceHistory.get(0)*100)/priceHistory.get(2)) - 100;
+        }
+        if (priceHistory.size() > 3 && priceHistory.get(3) > 0) {
+            diff3days = ((priceHistory.get(0)*100)/priceHistory.get(3)) - 100;
+        }
+        if (priceHistory.size() > 4 && priceHistory.get(4) > 0) {
+            diff4days = ((priceHistory.get(0)*100)/priceHistory.get(4)) - 100;
+        }
+        if (priceHistory.size() > 5  && priceHistory.get(5) > 0) {
+            diff5days = ((priceHistory.get(0)*100)/priceHistory.get(5)) - 100;
+        }
+        if (priceHistory.size() > 10 && priceHistory.get(10) > 0) {
+            diff10days = ((priceHistory.get(0)*100)/priceHistory.get(10)) - 100;
+        }
+        if (priceHistory.size() > 15 && priceHistory.get(15) > 0) {
+            diff15days = ((priceHistory.get(0)*100)/priceHistory.get(15)) - 100;
+        }
+        if (priceHistory.size() > 20 && priceHistory.get(20) > 0) {
+            diff20days = ((priceHistory.get(0)*100)/priceHistory.get(20)) - 100;
+        }
+        if (priceHistory.size() > 30 && priceHistory.get(30) > 0) {
+            diff30days = ((priceHistory.get(0)*100)/priceHistory.get(30)) - 100;
+        }
+        if (priceHistory.size() > 40 && priceHistory.get(40) > 0) {
+            diff40days = ((priceHistory.get(0)*100)/priceHistory.get(40)) - 100;
+        }
+        if (priceHistory.size() > 50 && priceHistory.get(50) > 0) {
+            diff50days = ((priceHistory.get(0)*100)/priceHistory.get(50)) - 100;
+        }
+        if (priceHistory.size() > 60 && priceHistory.get(60) > 0) {
+            diff60days = ((priceHistory.get(0)*100)/priceHistory.get(60)) - 100;
+        }
+        if (priceHistory.size() > 70 && priceHistory.get(70) > 0) {
+            diff70days = ((priceHistory.get(0)*100)/priceHistory.get(70)) - 100;
+        }
+        if (priceHistory.size() > 80 && priceHistory.get(80) > 0) {
+            diff80days = ((priceHistory.get(0)*100)/priceHistory.get(80)) - 100;
+        }
+        if (priceHistory.size() > 90 && priceHistory.get(90) > 0) {
+            diff90days = ((priceHistory.get(0)*100)/priceHistory.get(90)) - 100;
+        }
+        if (priceHistory.size() > 100 && priceHistory.get(100) > 0) {
+            diff100days = ((priceHistory.get(0)*100)/priceHistory.get(100)) - 100;
         }
 
     }
