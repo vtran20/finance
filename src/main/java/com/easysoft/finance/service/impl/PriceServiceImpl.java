@@ -1,20 +1,24 @@
 package com.easysoft.finance.service.impl;
 
+import com.alphaventage.AlphaVentageUtil;
+import com.alphaventage.stock.Base;
+import com.alphaventage.stock.StockInfo;
+import com.alphaventage.stock.StockPrice;
+import com.easysoft.finance.domain.Stock;
 import com.easysoft.finance.domain.StockDailyPrice;
 import com.easysoft.finance.repository.StockDailyPriceRepository;
 import com.easysoft.finance.repository.StockRepository;
 import com.easysoft.finance.service.PriceService;
 import com.easysoft.utils.Utils;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import yahoofinance.Stock;
-import yahoofinance.YahooFinance;
-import yahoofinance.histquotes.HistoricalQuote;
-import yahoofinance.histquotes.Interval;
 
 import java.io.IOException;
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -29,31 +33,33 @@ public class PriceServiceImpl implements PriceService {
     StockRepository stockRepository;
 
     @Override
-    public void importStockPrice(Stock stock) {
-        double price = stock.getQuote().getPrice().doubleValue();
-        Date date = Utils.getCurrentDateForStock(stock.getQuote().getLastTradeTime().getTime());
-        StockDailyPrice stockDailyPrice = stockDailyPriceRepository.findBySymbolAnDate(stock.getSymbol(), date);
-        if (stockDailyPrice == null) {
-            stockDailyPrice = new StockDailyPrice();
-            stockDailyPrice.setSymbol(stock.getSymbol());
-            stockDailyPrice.setPrice(price);
-            stockDailyPrice.setDate(date);
-        } else {
-            stockDailyPrice.setPrice(price);
+    public void importStockPrice(String symbol) {
+        StockInfo stockInfo = null;
+        try {
+            stockInfo = AlphaVentageUtil.getStockInTradeDay(symbol);
+            double price = stockInfo.getCurrentPrice();
+            Date date = stockInfo.getCurrentDate().getTime();
+            StockDailyPrice stockDailyPrice = stockDailyPriceRepository.findBySymbolAnDate(stockInfo.getSymbol(), date);
+            if (stockDailyPrice == null) {
+                stockDailyPrice = new StockDailyPrice();
+                stockDailyPrice.setSymbol(stockInfo.getSymbol());
+                stockDailyPrice.setPrice(price);
+                stockDailyPrice.setDate(date);
+            } else {
+                stockDailyPrice.setPrice(price);
+            }
+            stockDailyPriceRepository.save(stockDailyPrice);
+        } catch (Exception e) {
+            e.printStackTrace();
         }
-        stockDailyPriceRepository.save(stockDailyPrice);
-
-//        System.out.println("getSymbol:"+stock.getSymbol());
-//        System.out.println("getSymbol:"+stock.getDividend().toString());
-//        System.out.println("=============================");
     }
 
     @Override
-    public void importStockPrice(Map<String, Stock> stocks) {
-        if (stocks != null) {
-            for (Map.Entry<String, yahoofinance.Stock> entry : stocks.entrySet())
+    public void importStockPrice(List<String> symbols) {
+        if (symbols != null) {
+            for (String symbol: symbols)
             {
-                importStockPrice(entry.getValue());
+                importStockPrice(symbol);
             }
         }
 
@@ -63,59 +69,39 @@ public class PriceServiceImpl implements PriceService {
     /**
      * Import history stock daily price before numberOfDay to the current day
      *
-     * @param numberOfDay
      */
-    public void importHistoryPrice (int numberOfDay) {
+    public void importHistoryPrice () {
         try {
-            for (com.easysoft.finance.domain.Stock st : stockRepository.findAll()) {
-                Calendar calendar = Utils.getCalendarWithoutTime();
-                calendar.add(Calendar.DAY_OF_YEAR, -numberOfDay);
-                yahoofinance.Stock stock = YahooFinance.get(st.getSymbol(), calendar, Interval.DAILY);
-                for (HistoricalQuote quote : stock.getHistory()) {
-                    Date date = Utils.getCurrentDateForStock(quote.getDate().getTime());
-                    StockDailyPrice stockDailyPrice = stockDailyPriceRepository.findBySymbolAnDate(stock.getSymbol(), date);
-                    if (stockDailyPrice == null) {
-                        stockDailyPrice = new StockDailyPrice();
-                        stockDailyPrice.setSymbol(stock.getSymbol());
-                        stockDailyPrice.setPrice(quote.getClose().doubleValue());
-                        stockDailyPrice.setDate(date);
-                    } else {
-                        stockDailyPrice.setPrice(quote.getClose().doubleValue());
-                    }
-                    stockDailyPriceRepository.save(stockDailyPrice);
-                }
+            for (Stock st : stockRepository.findAll()) {
+                importHistoryPrice(st.getSymbol());
             }
-
-
-        } catch (IOException e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }
     /**
      * Import history stock daily price before numberOfDay to the current day for specific Stock
      *
-     * @param numberOfDay
      * @param symbol
      */
-    public void importHistoryPrice (int numberOfDay, String symbol) {
+    public void importHistoryPrice (String symbol) {
         try {
-            Calendar calendar = Utils.getCalendarWithoutTime();
-            calendar.add(Calendar.DAY_OF_YEAR, -numberOfDay);
-            yahoofinance.Stock stock = YahooFinance.get(symbol, calendar, Interval.DAILY);
-            for (HistoricalQuote quote : stock.getHistory()) {
-                Date date = Utils.getCurrentDateForStock(quote.getDate().getTime());
-                StockDailyPrice stockDailyPrice = stockDailyPriceRepository.findBySymbolAnDate(stock.getSymbol(), date);
+            if (StringUtils.isEmpty(symbol)) return;
+            StockInfo stockInfo = AlphaVentageUtil.getStockDaily(symbol);
+            for (Map.Entry<String, StockPrice> quote : stockInfo.getMap().entrySet()) {
+                Date date = Utils.getCalendarWithoutTime(new SimpleDateFormat(Base.DATE_FORMAT).parse(quote.getKey())).getTime();
+                StockDailyPrice stockDailyPrice = stockDailyPriceRepository.findBySymbolAnDate(stockInfo.getSymbol(), date);
                 if (stockDailyPrice == null) {
                     stockDailyPrice = new StockDailyPrice();
-                    stockDailyPrice.setSymbol(stock.getSymbol());
-                    stockDailyPrice.setPrice(quote.getClose().doubleValue());
+                    stockDailyPrice.setSymbol(stockInfo.getSymbol());
+                    stockDailyPrice.setPrice(quote.getValue().getClosePrice());
                     stockDailyPrice.setDate(date);
                 } else {
-                    stockDailyPrice.setPrice(quote.getClose().doubleValue());
+                    stockDailyPrice.setPrice(quote.getValue().getClosePrice());
                 }
                 stockDailyPriceRepository.save(stockDailyPrice);
             }
-        } catch (IOException e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
 
@@ -126,33 +112,9 @@ public class PriceServiceImpl implements PriceService {
      *
      * @param from
      * @param to
+     * @deprecated
      */
     public void importHistoryPrice (Date from, Date to) {
-        try {
-            for (com.easysoft.finance.domain.Stock st : stockRepository.findAll()) {
-                Calendar calendarFrom = Utils.getCalendarWithoutTime(from);
-                Calendar calendarTo = Utils.getCalendarWithoutTime(to);
-
-                yahoofinance.Stock stock = YahooFinance.get(st.getSymbol(), calendarFrom, calendarTo, Interval.DAILY);
-                for (HistoricalQuote quote : stock.getHistory()) {
-                    Date date = Utils.getCurrentDateForStock(quote.getDate().getTime());
-                    StockDailyPrice stockDailyPrice = stockDailyPriceRepository.findBySymbolAnDate(stock.getSymbol(), date);
-                    if (stockDailyPrice == null) {
-                        stockDailyPrice = new StockDailyPrice();
-                        stockDailyPrice.setSymbol(stock.getSymbol());
-                        stockDailyPrice.setPrice(quote.getClose().doubleValue());
-                        stockDailyPrice.setDate(date);
-                    } else {
-                        stockDailyPrice.setPrice(quote.getClose().doubleValue());
-                    }
-                    stockDailyPriceRepository.save(stockDailyPrice);
-                }
-            }
-
-
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
 
     }
 

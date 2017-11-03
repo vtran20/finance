@@ -107,14 +107,6 @@
             <version>3.2.2</version>
         </dependency>
 
-        <!--Other third parties lib-->
-        <dependency>
-            <groupId>com.yahoofinance-api</groupId>
-            <artifactId>YahooFinanceAPI</artifactId>
-            <version>3.9.0</version>
-            <!--<classifier>sources</classifier>-->
-        </dependency>
-
     </dependencies>
 
     <!-- Package as an executable jar -->

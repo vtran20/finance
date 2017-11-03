@@ -13,7 +13,6 @@ import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
-import yahoofinance.YahooFinance;
 
 import java.io.IOException;
 import java.util.*;
@@ -41,7 +40,7 @@ public class ScheduledTasks {
     /**
      * This method will get price from Yahoo Finance and update into each stock on each day. Data of Saturday or Sunday will be stored in last Friday.
      */
-    @Scheduled(cron = "0 */10 0-23 * * ?")
+    @Scheduled(cron = "0 */10 8-17 * * ?")
     public void importDailyPrice() {
 
         //get all stocks
@@ -49,25 +48,14 @@ public class ScheduledTasks {
         for (Iterator<Stock> i = stockRepository.findAll().iterator(); i.hasNext();) {
             ls.add(i.next().getSymbol());
         }
-        String[] stockArr = new String[ls.size()];
-        //build symbol array
-        stockArr = ls.toArray(stockArr);
-        //get prices from symbol array
-        Map<String, yahoofinance.Stock> stocks = null;
-        try {
-            stocks = YahooFinance.get(stockArr, false);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
-        priceService.importStockPrice(stocks);
+        priceService.importStockPrice(ls);
         log.info("The time is now 1 " + new Date());
     }
 
     /**
      * Send email to notify stocks have interest.
      */
-    @Scheduled(cron = "0 */11 0-23 * * ?")
+    @Scheduled(cron = "0 */11 8-17 * * ?")
     public void notifyForStockCanBeSold() {
         List<StockOrder> stockOrders = stockOrderRepository.findActiveOrders();
         for (StockOrder order: stockOrders) {

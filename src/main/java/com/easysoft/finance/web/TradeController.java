@@ -23,7 +23,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.bind.annotation.*;
-import yahoofinance.YahooFinance;
 
 import java.io.IOException;
 import java.util.*;
@@ -56,26 +55,24 @@ public class TradeController {
 
     @RequestMapping(value = "/trade/stock", method = RequestMethod.POST)
     public String saveStock(Stock stock) {
-        if (StringUtils.isNotEmpty(stock.getSymbol())) {
+        if (stock != null && StringUtils.isNotEmpty(stock.getSymbol())) {
             try {
-                yahoofinance.Stock st = YahooFinance.get(stock.getSymbol());
-                if (st != null && StringUtils.isNotEmpty(st.getCurrency())) {
-                    Stock s = stockRepository.findBySymbol(stock.getSymbol());
-                    if (s != null) {
-                        stock = s;
-                    } else { //New Stock
-                        stock.setName(st.getName());
-                        stock.setExchange(st.getStockExchange());
-                        stockRepository.save(stock);
-                        //Load price history
-                        priceService.importHistoryPrice(200, stock.getSymbol());
+                Stock s = stockRepository.findBySymbol(stock.getSymbol());
+                if (s != null) {
+                    stock = s;
+                    // do no thing
+                } else { //New Stock
+                    stockRepository.save(stock);
+                    //Load price history
+                    priceService.importHistoryPrice(stock.getSymbol());
 
-                    }
                 }
 
-            } catch (IOException e) {
+            } catch (Exception e) {
                 e.printStackTrace();
             }
+        } else {
+            return "redirect:/"; //home page
         }
 
         return "redirect:/trade/stock/" + stock.getId();
@@ -182,7 +179,7 @@ public class TradeController {
 
     @RequestMapping("trade/stock/reload/{symbol}")
     public String reloadPrice(@PathVariable String symbol) {
-        priceService.importHistoryPrice(150, symbol);
+        priceService.importHistoryPrice(symbol);
         return "redirect:/diffndays";
     }
 
@@ -339,8 +336,13 @@ public class TradeController {
 
     }
     @RequestMapping("/reload")
-    public String stockDiff1DayPrice() {
+    public String reloadDaily() {
         scheduledTasks.importDailyPrice();
+        return "redirect:/";
+    }
+    @RequestMapping("/reloadhistory")
+    public String reloadHistory() {
+        priceService.importHistoryPrice();
         return "redirect:/";
     }
 
