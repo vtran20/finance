@@ -1,17 +1,14 @@
 package com.alphaventage.stock;
 
-import com.alphaventage.AlphaVentageUtil;
 import com.easysoft.utils.Utils;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonSetter;
-import com.fasterxml.jackson.core.type.TypeReference;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import org.springframework.web.client.RestTemplate;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.*;
+import java.util.Calendar;
+import java.util.Map;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class StockInfo extends Base{

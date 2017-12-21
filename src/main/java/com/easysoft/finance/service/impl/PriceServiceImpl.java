@@ -16,6 +16,7 @@ import com.easysoft.finance.repository.StockRepository;
 import com.easysoft.finance.service.PriceService;
 import com.easysoft.utils.Utils;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -27,6 +28,7 @@ import java.util.Map;
 
 @Service
 public class PriceServiceImpl implements PriceService {
+    private Logger log = Logger.getLogger(PriceServiceImpl.class);
 
     @Autowired
     StockDailyPriceRepository stockDailyPriceRepository;
@@ -60,6 +62,7 @@ public class PriceServiceImpl implements PriceService {
             }
             stockDailyPriceRepository.save(stockDailyPrice);
         } catch (Exception e) {
+            log.info("importStockPrice fail for share:"+symbol);
             e.printStackTrace();
         }
     }
@@ -125,6 +128,7 @@ public class PriceServiceImpl implements PriceService {
                 stockDailyPriceRepository.saveAll(stockDailyPrices);
             }
         } catch (Exception e) {
+            log.info("importHistoryPrice fail for share:"+symbol);
             e.printStackTrace();
         }
 
