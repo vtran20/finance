@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head lang="en">
+
+    <title>Stock Analysis</title>
+
+    <!--/*/ <th:block th:include="/fragments/headerinc :: head"></th:block> /*/-->
+</head>
+<body>
+<div class="container">
+    <!--/*/ <th:block th:include="/fragments/header :: header"></th:block> /*/-->
+    <h2>Stock Analysis</h2>
+    <div th:if="${not #lists.isEmpty(stockAnalysis)}">
+        <h2>Stock List</h2>
+        <table class="table table-striped">
+            <tr>
+                <th>Symbol</th>
+                <th>Cumulative Return</th>
+                <th>Average Return</th>
+                <th>Risk (Standand Deviation Return)</th>
+                <th>Sharpe Ratio</th>
+            </tr>
+            <tr th:each="stockAnalysis : ${stockAnalysis}">
+                <td th:text="${stockAnalysis.symbol}"></td>
+                <td th:text="${stockAnalysis.cumulativeReturn}"></td>
+                <td th:text="${stockAnalysis.averageReturn}"></td>
+                <td th:text="${stockAnalysis.riskStandardDeviation}"></td>
+                <td th:text="${stockAnalysis.sharpeRatio}"></td>
+            </tr>
+        </table>
+
+    </div>
+</div>
+
+</body>
+</html>

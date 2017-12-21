@@ -37,6 +37,7 @@
                 <th>Symbol</th>
             </tr>
             <tr th:each="stock : ${stockPriceHistories}">
+                <div th:if="${not #lists.isEmpty(stock.stockDailyPrices)}">
                 <td th:style="${stock.diff20 > 0? 'background:green;color: white':stock.diff20 == 0? 'background:blue;color: white':'background:red;color: white'}"  th:text="${#numbers.formatDecimal(stock.diff20, 1, 2)}"></td>
                 <td th:style="${stock.diff19 > 0? 'background:green;color: white':stock.diff19 == 0? 'background:blue;color: white':'background:red;color: white'}"  th:text="${#numbers.formatDecimal(stock.diff19, 1, 2)}"></td>
                 <td th:style="${stock.diff18 > 0? 'background:green;color: white':stock.diff18 == 0? 'background:blue;color: white':'background:red;color: white'}"  th:text="${#numbers.formatDecimal(stock.diff18, 1, 2)}"></td>
@@ -60,6 +61,7 @@
                 <td th:text="${#numbers.formatDecimal(stock.getNegativeAmount(), 1, 2)}"></td>
                 <td th:text="${#numbers.formatDecimal(stock.currPrice, 1, 2)}"></td>
                 <td><a th:href="${'/trade/stock/history?symbol='+stock.symbol}" th:text="${stock.symbol}" th:title="${trades[__${stock.symbol}__]}">Symbol</a></td>
+                </div>
             </tr>
         </table>
 

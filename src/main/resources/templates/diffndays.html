@@ -34,6 +34,7 @@
             </tr>
             <tr th:each="stock : ${stockPriceHistories}">
                 <td><a th:href="${'/trade/stock/reload/' + stock.symbol}">Reload</a></td>
+                <div th:if="${not #lists.isEmpty(stock.stockDailyPrices)}">
                 <td th:style="${stock.diff100days > 0? 'background:green;color: white':stock.diff100days == 0? 'background:blue;color: white':'background:red;color: white' }" th:text="${#numbers.formatDecimal(stock.diff100days, 1, 2)}"></td>
                 <td th:style="${stock.diff90days > 0? 'background:green;color: white':stock.diff90days == 0? 'background:blue;color: white':'background:red;color: white' }" th:text="${#numbers.formatDecimal(stock.diff90days, 1, 2)}"></td>
                 <td th:style="${stock.diff80days > 0? 'background:green;color: white':stock.diff80days == 0? 'background:blue;color: white':'background:red;color: white' }" th:text="${#numbers.formatDecimal(stock.diff80days, 1, 2)}"></td>
@@ -52,6 +53,7 @@
                 <td th:style="${stock.diff1day > 0? 'background:green;color: white':stock.diff1day == 0? 'background:blue;color: white':'background:red;color: white'}"  th:text="${#numbers.formatDecimal(stock.diff1day, 1, 2)}"></td>
                 <td th:text="${#numbers.formatDecimal(stock.currPrice, 1, 2)}"></td>
                 <td><a th:href="${'/trade/stock/history?symbol='+stock.symbol}" th:text="${stock.symbol}" th:title="${trades[__${stock.symbol}__]}">Symbol</a></td>
+                </div>
             </tr>
         </table>
 

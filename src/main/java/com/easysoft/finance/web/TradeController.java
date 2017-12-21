@@ -1,13 +1,12 @@
 package com.easysoft.finance.web;
 
+import com.easysoft.finance.domain.StockAnalysisDuration;
 import com.easysoft.finance.domain.StockOrder;
 import com.easysoft.finance.domain.Stock;
 import com.easysoft.finance.domain.StockDailyPrice;
 import com.easysoft.finance.domain.pojo.StockPriceDiff1DayHistory;
 import com.easysoft.finance.domain.pojo.StockPriceHistory;
-import com.easysoft.finance.repository.StockOrderRepository;
-import com.easysoft.finance.repository.StockDailyPriceRepository;
-import com.easysoft.finance.repository.StockRepository;
+import com.easysoft.finance.repository.*;
 import com.easysoft.finance.service.PriceService;
 import com.easysoft.finance.service.cron.ScheduledTasks;
 import com.easysoft.utils.Utils;
@@ -37,6 +36,10 @@ public class TradeController {
     StockOrderRepository stockOrderRepository;
     @Autowired
     StockDailyPriceRepository stockDailyPriceRepository;
+    @Autowired
+    StockAnalysisDurationRepository stockAnalysisDurationRepository;
+    @Autowired
+    StockAnalysisRepository stockAnalysisRepository;
     @Autowired
     PriceService priceService;
     @Autowired
@@ -102,6 +105,50 @@ public class TradeController {
         return "redirect:/trade/stocks";
     }
     ////////////////////////////END STOCK///////////////////////////////////////
+    ////////////////////////////START ANALYSIS///////////////////////////////////////
+    @RequestMapping("trade/analysis/new")
+    public String newAnalysisDuration(Model model) {
+        model.addAttribute("analysisDuration", new StockAnalysisDuration());
+        return "/trade/analysis/form";
+    }
+
+    @RequestMapping(value = "/trade/analysisduration", method = RequestMethod.POST)
+    public String saveStockAnalysisDuration(StockAnalysisDuration stockAnalysisDuration) {
+        if (stockAnalysisDuration != null && stockAnalysisDuration.getStartDate() != null && stockAnalysisDuration.getEndDate() != null) {
+            try {
+                StockAnalysisDuration s = stockAnalysisDurationRepository.findByDuration(stockAnalysisDuration.getStartDate(), stockAnalysisDuration.getEndDate());
+                if (s != null) {
+                    stockAnalysisDuration = s;
+                    // do no thing
+                } else { //New Stock
+                    stockAnalysisDuration = stockAnalysisDurationRepository.save(stockAnalysisDuration);
+                    //Analysis stock in this duration
+                    priceService.analysisStock(stockAnalysisDuration.getStartDate(), stockAnalysisDuration.getEndDate());
+
+                }
+
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        } else {
+            return "redirect:/"; //home page
+        }
+        return "redirect:/trade/analysis/" + stockAnalysisDuration.getId();
+    }
+
+    @RequestMapping("/trade/analysis/{id}")
+    public String viewStockAnalysis(@PathVariable Long id, Model model) {
+        model.addAttribute("stockAnalysis", stockAnalysisRepository.findByDuration(id));
+        return "trade/analysis/analysis";
+    }
+
+    @RequestMapping(value = "/trade/durations", method = RequestMethod.GET)
+    public String listAnalysisDuration(Model model) {
+        model.addAttribute("durations", stockAnalysisDurationRepository.findAll());
+        return "trade/analysis/durations";
+    }
+    ////////////////////////////END ANALYSIS///////////////////////////////////////
+
     ////////////////////////////START ORDER///////////////////////////////////////
     @RequestMapping("trade/order/new")
     public String newOrder(Model model) {
@@ -243,6 +290,10 @@ public class TradeController {
             startCalendar.add(Calendar.DAY_OF_YEAR, -150);
             List<StockDailyPrice> stockDailyPrices = stockDailyPriceRepository.findBySymbolAnDate(stock.getSymbol(), startCalendar.getTime(), calendar.getTime());
             StockPriceHistory stockPriceHistory = new StockPriceHistory(stockDailyPrices);
+            //Fix issue in the case stockDailyPrices is empty
+            if (StringUtils.isEmpty(stockPriceHistory.getSymbol())) {
+                stockPriceHistory.setSymbol(stock.getSymbol());
+            }
             stockPriceHistories.add(stockPriceHistory);
         }
 
@@ -320,6 +371,10 @@ public class TradeController {
             startCalendar.add(Calendar.DAY_OF_YEAR, -50);
             List<StockDailyPrice> stockDailyPrices = stockDailyPriceRepository.findBySymbolAnDate(stock.getSymbol(), startCalendar.getTime(), calendar.getTime());
             StockPriceDiff1DayHistory stockPriceHistory = new StockPriceDiff1DayHistory(stockDailyPrices);
+            //Fix issue in the case stockDailyPrices is empty
+            if (StringUtils.isEmpty(stockPriceHistory.getSymbol())) {
+                stockPriceHistory.setSymbol(stock.getSymbol());
+            }
             stockPriceHistories.add(stockPriceHistory);
         }
         Collections.sort(stockPriceHistories, new Comparator<StockPriceDiff1DayHistory>() {

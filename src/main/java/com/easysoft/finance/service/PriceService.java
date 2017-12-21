@@ -14,4 +14,6 @@ public interface PriceService {
     public void importHistoryPrice (boolean full);
     public void importHistoryPrice (String symbol);
     public void importHistoryPrice (String symbol, boolean full);
+
+    public void analysisStock(Date startDate, Date endDate);
 }

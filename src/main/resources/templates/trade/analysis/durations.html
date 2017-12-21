@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head lang="en">
+
+    <title>Stock Analysis Duration</title>
+
+    <!--/*/ <th:block th:include="/fragments/headerinc :: head"></th:block> /*/-->
+</head>
+<body>
+<div class="container">
+    <!--/*/ <th:block th:include="/fragments/header :: header"></th:block> /*/-->
+    <h2>Stock Durations</h2>
+    <div th:if="${not #lists.isEmpty(durations)}">
+        <h2>Stock List</h2>
+        <table class="table table-striped">
+            <tr>
+                <th>Name</th>
+                <th>Start Date</th>
+                <th>End Date</th>
+            </tr>
+            <tr th:each="duration : ${durations}">
+                <td><a th:href="${'/trade/analysis/'+duration.id}" th:text="${duration.name}">Symbol</a></td>
+                <td th:text="${duration.startDate}"></td>
+                <td th:text="${duration.endDate}"></td>
+            </tr>
+        </table>
+
+    </div>
+
+</div>
+
+</body>
+</html>

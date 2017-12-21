@@ -5,6 +5,8 @@ import com.alphaventage.stock.Base;
 import com.alphaventage.stock.StockInfo;
 import com.alphaventage.stock.StockPrice;
 import com.easysoft.finance.domain.Stock;
+import com.easysoft.finance.domain.StockAnalysis;
+import com.easysoft.finance.domain.StockAnalysisDuration;
 import com.easysoft.finance.domain.StockDailyPrice;
 import com.easysoft.finance.repository.StockDailyPriceRepository;
 import com.easysoft.finance.repository.StockRepository;
@@ -18,9 +20,6 @@ import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.*;
 
-/**
- * Created by vutran on 9/25/2017.
- */
 @Service
 public class PriceServiceImpl implements PriceService {
 
@@ -28,6 +27,10 @@ public class PriceServiceImpl implements PriceService {
     StockDailyPriceRepository stockDailyPriceRepository;
     @Autowired
     StockRepository stockRepository;
+    @Autowired
+    StockAnalysis stockAnalysis;
+    @Autowired
+    StockAnalysisDuration stockAnalysisDuration;
 
     /**
      * Update stock price in current day
@@ -122,4 +125,9 @@ public class PriceServiceImpl implements PriceService {
 
     }
 
+    public void analysisStock(Date startDate, Date endDate) {
+        //Get all Stocks
+        //Get stock prices during this duration
+        //Calculate sharpe ratio
+    }
 }
