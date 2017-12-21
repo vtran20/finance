@@ -11,7 +11,7 @@ import java.util.List;
 public interface PriceService {
     public void importStockPrice (String symbol);
     public void importStockPrice (List<String> symbols);
-    public void importHistoryPrice ();
+    public void importHistoryPrice (boolean full);
     public void importHistoryPrice (String symbol);
     public void importHistoryPrice (String symbol, boolean full);
 }

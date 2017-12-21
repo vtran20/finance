@@ -58,7 +58,7 @@ public class ScheduledTasks {
      */
     @Scheduled(cron = "0 0 18 1 * ?")
     public void importMonthlyPrice() {
-        priceService.importHistoryPrice();
+        priceService.importHistoryPrice(false);
         log.info("Import monthly Price: " + new Date());
     }
 

@@ -77,10 +77,10 @@ public class PriceServiceImpl implements PriceService {
      * Import history stock daily price before numberOfDay to the current day
      *
      */
-    public void importHistoryPrice () {
+    public void importHistoryPrice (boolean full) {
         try {
             for (Stock st : stockRepository.findAll()) {
-                importHistoryPrice(st.getSymbol(), true);
+                importHistoryPrice(st.getSymbol(), full);
             }
         } catch (Exception e) {
             e.printStackTrace();

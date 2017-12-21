@@ -337,12 +337,12 @@ public class TradeController {
     }
     @RequestMapping("/reload")
     public String reloadDaily() {
-        scheduledTasks.importDailyPrice();
+        priceService.importHistoryPrice(false);
         return "redirect:/";
     }
     @RequestMapping("/reloadhistory")
     public String reloadHistory() {
-        priceService.importHistoryPrice();
+        priceService.importHistoryPrice(true);
         return "redirect:/";
     }
 
