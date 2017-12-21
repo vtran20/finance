@@ -11,17 +11,17 @@
     <!--/*/ <th:block th:include="/fragments/header :: header"></th:block> /*/-->
     <h2>Stock Analysis</h2>
     <div th:if="${not #lists.isEmpty(stockAnalysis)}">
-        <h2>Stock List</h2>
+        <h2>Stock List:</h2>  <h4 th:text="${#dates.format(stockAnalysisDuration.startDate, 'yyyy-MM-dd')}+' to '+ ${#dates.format(stockAnalysisDuration.endDate, 'yyyy-MM-dd')}"></h4>
         <table class="table table-striped">
             <tr>
                 <th>Symbol</th>
-                <th>Cumulative Return</th>
-                <th>Average Return</th>
-                <th>Risk (Standand Deviation Return)</th>
-                <th>Sharpe Ratio</th>
+                <th><a href="?sort=Y&column=cumulative">Cumulative Return</a></th>
+                <th><a href="?sort=Y&column=average">Average Return</a></th>
+                <th><a href="?sort=Y&column=risk">Risk (Standand Deviation Return)</a></th>
+                <th><a href="?sort=Y&column=sharpeRatio">Sharpe Ratio</a></th>
             </tr>
             <tr th:each="stockAnalysis : ${stockAnalysis}">
-                <td th:text="${stockAnalysis.symbol}"></td>
+                <td><a th:href="${'/trade/stock/history?symbol='+stockAnalysis.symbol}" th:text="${stockAnalysis.symbol}">Symbol</a></td>
                 <td th:text="${stockAnalysis.cumulativeReturn}"></td>
                 <td th:text="${stockAnalysis.averageReturn}"></td>
                 <td th:text="${stockAnalysis.riskStandardDeviation}"></td>

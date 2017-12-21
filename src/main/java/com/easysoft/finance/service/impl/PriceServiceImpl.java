@@ -8,6 +8,7 @@ import com.easysoft.finance.domain.Stock;
 import com.easysoft.finance.domain.StockAnalysis;
 import com.easysoft.finance.domain.StockAnalysisDuration;
 import com.easysoft.finance.domain.StockDailyPrice;
+import com.easysoft.finance.domain.pojo.SharpeRatio;
 import com.easysoft.finance.repository.StockAnalysisDurationRepository;
 import com.easysoft.finance.repository.StockAnalysisRepository;
 import com.easysoft.finance.repository.StockDailyPriceRepository;
@@ -129,9 +130,25 @@ public class PriceServiceImpl implements PriceService {
 
     }
 
-    public void analysisStock(Date startDate, Date endDate) {
+    public void analysisStock(StockAnalysisDuration duration) {
         //Get all Stocks
-        //Get stock prices during this duration
+        try {
+            for (Stock st : stockRepository.findAll()) {
+                //Get stock prices during this duration
+                List<Double> dailyPrices = stockDailyPriceRepository.findPriceBySymbolAndDate(st.getSymbol(), duration.getStartDate(), duration.getEndDate());
+                SharpeRatio sr = new SharpeRatio(dailyPrices);
+                StockAnalysis stockAnalysis = new StockAnalysis();
+                stockAnalysis.setSymbol(st.getSymbol());
+                stockAnalysis.setStockAnalysisDuration(duration);
+                stockAnalysis.setCumulativeReturn(sr.getCumulativeReturn());
+                stockAnalysis.setAverageReturn(sr.getAverageDailyReturn());
+                stockAnalysis.setRiskStandardDeviation(sr.getRiskSTD());
+                stockAnalysis.setSharpeRatio(sr.getSharpeRatio());
+                stockAnalysisRepository.save(stockAnalysis);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
         //Calculate sharpe ratio
     }
 }

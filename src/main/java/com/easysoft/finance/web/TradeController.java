@@ -1,9 +1,6 @@
 package com.easysoft.finance.web;
 
-import com.easysoft.finance.domain.StockAnalysisDuration;
-import com.easysoft.finance.domain.StockOrder;
-import com.easysoft.finance.domain.Stock;
-import com.easysoft.finance.domain.StockDailyPrice;
+import com.easysoft.finance.domain.*;
 import com.easysoft.finance.domain.pojo.StockPriceDiff1DayHistory;
 import com.easysoft.finance.domain.pojo.StockPriceHistory;
 import com.easysoft.finance.repository.*;
@@ -123,7 +120,7 @@ public class TradeController {
                 } else { //New Stock
                     stockAnalysisDuration = stockAnalysisDurationRepository.save(stockAnalysisDuration);
                     //Analysis stock in this duration
-                    priceService.analysisStock(stockAnalysisDuration.getStartDate(), stockAnalysisDuration.getEndDate());
+                    priceService.analysisStock(stockAnalysisDuration);
 
                 }
 
@@ -137,8 +134,56 @@ public class TradeController {
     }
 
     @RequestMapping("/trade/analysis/{id}")
-    public String viewStockAnalysis(@PathVariable Long id, Model model) {
-        model.addAttribute("stockAnalysis", stockAnalysisRepository.findByDuration(id));
+    public String viewStockAnalysis(@PathVariable Long id, Model model,@RequestParam(required=false,name="sort") String sort, @RequestParam(required=false,name="column") String column) {
+        List<StockAnalysis> stockAnalysises = stockAnalysisRepository.findByDuration(id);
+        if ("Y".equals(sort)) {
+            if ("sharpeRatio".equals(column)) {
+                Collections.sort(stockAnalysises, new Comparator<StockAnalysis>() {
+                    @Override
+                    public int compare(StockAnalysis lhs, StockAnalysis rhs) {
+                        // -1 - less than, 1 - greater than, 0 - equal, all inversed for descending
+                        return (lhs.getSharpeRatio()) > (rhs.getSharpeRatio()) ? -1 : 1;
+                    }
+                });
+            } else if ("risk".equals(column)) {
+                Collections.sort(stockAnalysises, new Comparator<StockAnalysis>() {
+                    @Override
+                    public int compare(StockAnalysis lhs, StockAnalysis rhs) {
+                        // -1 - less than, 1 - greater than, 0 - equal, all inversed for descending
+                        return (lhs.getRiskStandardDeviation()) > (rhs.getRiskStandardDeviation()) ? -1 : 1;
+                    }
+                });
+
+            } else if ("average".equals(column)) {
+                Collections.sort(stockAnalysises, new Comparator<StockAnalysis>() {
+                    @Override
+                    public int compare(StockAnalysis lhs, StockAnalysis rhs) {
+                        // -1 - less than, 1 - greater than, 0 - equal, all inversed for descending
+                        return (lhs.getAverageReturn()) > (rhs.getAverageReturn()) ? -1 : 1;
+                    }
+                });
+
+            } else if ("cumulative".equals(column)) {
+                Collections.sort(stockAnalysises, new Comparator<StockAnalysis>() {
+                    @Override
+                    public int compare(StockAnalysis lhs, StockAnalysis rhs) {
+                        // -1 - less than, 1 - greater than, 0 - equal, all inversed for descending
+                        return (lhs.getCumulativeReturn()) > (rhs.getCumulativeReturn()) ? -1 : 1;
+                    }
+                });
+            }
+        } else {
+            Collections.sort(stockAnalysises, new Comparator<StockAnalysis>() {
+                @Override
+                public int compare(StockAnalysis lhs, StockAnalysis rhs) {
+                    // -1 - less than, 1 - greater than, 0 - equal, all inversed for descending
+                    return (lhs.getSharpeRatio()) > (rhs.getSharpeRatio()) ? -1 : 1;
+                }
+            });
+        }
+
+        model.addAttribute("stockAnalysis", stockAnalysises);
+        model.addAttribute("stockAnalysisDuration", stockAnalysisDurationRepository.findById(id).get());
         return "trade/analysis/analysis";
     }
 

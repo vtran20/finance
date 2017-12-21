@@ -1,6 +1,7 @@
 package com.easysoft.finance.service;
 
 import com.alphaventage.stock.StockInfo;
+import com.easysoft.finance.domain.StockAnalysisDuration;
 
 import java.util.Date;
 import java.util.List;
@@ -15,5 +16,5 @@ public interface PriceService {
     public void importHistoryPrice (String symbol);
     public void importHistoryPrice (String symbol, boolean full);
 
-    public void analysisStock(Date startDate, Date endDate);
+    public void analysisStock(StockAnalysisDuration duration);
 }

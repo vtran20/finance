@@ -10,13 +10,13 @@ public class StockAnalysis extends BaseEntity implements Serializable {
     @Column(nullable = true)
     private String symbol;
     @Column(nullable = true)
-    private float cumulativeReturn;
+    private double cumulativeReturn;
     @Column(nullable = true)
-    private float averageReturn;
+    private double averageReturn;
     @Column(nullable = true)
-    private float riskStandardDeviation;
+    private double riskStandardDeviation;
     @Column(nullable = true)
-    private float sharpeRatio;
+    private double sharpeRatio;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "stock_analysis_duration_id")
@@ -30,35 +30,35 @@ public class StockAnalysis extends BaseEntity implements Serializable {
         this.symbol = symbol;
     }
 
-    public float getCumulativeReturn() {
+    public double getCumulativeReturn() {
         return cumulativeReturn;
     }
 
-    public void setCumulativeReturn(float cumulativeReturn) {
+    public void setCumulativeReturn(double cumulativeReturn) {
         this.cumulativeReturn = cumulativeReturn;
     }
 
-    public float getAverageReturn() {
+    public double getAverageReturn() {
         return averageReturn;
     }
 
-    public void setAverageReturn(float averageReturn) {
+    public void setAverageReturn(double averageReturn) {
         this.averageReturn = averageReturn;
     }
 
-    public float getRiskStandardDeviation() {
+    public double getRiskStandardDeviation() {
         return riskStandardDeviation;
     }
 
-    public void setRiskStandardDeviation(float riskStandardDeviation) {
+    public void setRiskStandardDeviation(double riskStandardDeviation) {
         this.riskStandardDeviation = riskStandardDeviation;
     }
 
-    public float getSharpeRatio() {
+    public double getSharpeRatio() {
         return sharpeRatio;
     }
 
-    public void setSharpeRatio(float sharpeRatio) {
+    public void setSharpeRatio(double sharpeRatio) {
         this.sharpeRatio = sharpeRatio;
     }
 

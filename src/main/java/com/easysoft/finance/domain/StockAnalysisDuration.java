@@ -15,10 +15,10 @@ public class StockAnalysisDuration extends BaseEntity implements Serializable {
     private String name;
     @Column(nullable = false)
     @DateTimeFormat(pattern = "yyyy-MM-dd")
-    Date startDate;
+    private Date startDate;
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     @Column(nullable = false)
-    Date endDate;
+    private Date endDate;
 
     @OneToMany(mappedBy = "stockAnalysisDuration",cascade = CascadeType.ALL,orphanRemoval = true, fetch = FetchType.LAZY)
     List<StockAnalysis> stockAnalysisList = new ArrayList<StockAnalysis>();
