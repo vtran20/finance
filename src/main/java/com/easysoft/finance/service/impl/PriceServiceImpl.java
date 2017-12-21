@@ -80,7 +80,7 @@ public class PriceServiceImpl implements PriceService {
     public void importHistoryPrice () {
         try {
             for (Stock st : stockRepository.findAll()) {
-                importHistoryPrice(st.getSymbol());
+                importHistoryPrice(st.getSymbol(), true);
             }
         } catch (Exception e) {
             e.printStackTrace();
