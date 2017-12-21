@@ -61,7 +61,6 @@ public class StockPriceDiff1DayHistory {
     private List<Double> sortList = new ArrayList<>();
     public StockPriceDiff1DayHistory(List<StockDailyPrice> stockDailyPriceList) {
         stockDailyPrices = stockDailyPriceList;
-        Calendar currCalendar = Utils.getCalendarWithoutTime();
         for (StockDailyPrice dailyPrice: stockDailyPrices) {
             symbol = dailyPrice.getSymbol();
             priceHistory.add(dailyPrice.getPrice());
