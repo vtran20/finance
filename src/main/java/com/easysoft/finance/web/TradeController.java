@@ -64,7 +64,7 @@ public class TradeController {
                 } else { //New Stock
                     stockRepository.save(stock);
                     //Load price history
-                    priceService.importHistoryPrice(stock.getSymbol());
+                    priceService.importHistoryPrice(stock.getSymbol(), true);
 
                 }
 
@@ -179,7 +179,7 @@ public class TradeController {
 
     @RequestMapping("trade/stock/reload/{symbol}")
     public String reloadPrice(@PathVariable String symbol) {
-        priceService.importHistoryPrice(symbol);
+        priceService.importHistoryPrice(symbol, true);
         return "redirect:/diffndays";
     }
 
@@ -211,12 +211,12 @@ public class TradeController {
 
                 String days = "";
                 String prices = "";
-                for (int i=100; i >= 0; i--) {
+                for (int i = stockDailyPrices.size() -1 ; i >= 0; i--) {
                     StockDailyPrice sp = stockDailyPrices.get(i);
                     if ("".equals(days)) {
                         days = String.valueOf(i);
                     } else {
-                        days = days + "," + String.valueOf(i)  ;
+                        days = days + "," + String.valueOf(i);
                     }
                     if ("".equals(prices)) {
                         prices = String.valueOf(sp.getPrice());
@@ -404,6 +404,22 @@ public class TradeController {
         result.put("recordsTotal", stocks.size());
         result.put("recordsFiltered", stocks.size());
         result.put("data", stocks);
+        return result;
+    }
+
+    @RequestMapping(value = "test.json", method = RequestMethod.GET)
+    public
+    @ResponseBody
+    Map test() throws Exception {
+        Calendar calendar = Utils.getCalendarWithoutTime();
+        Calendar startCalendar = Utils.getCalendarWithoutTime();
+        startCalendar.add(Calendar.DAY_OF_YEAR, -150);
+        List<Double> stockDailyPrices = stockDailyPriceRepository.findPriceBySymbolAndDate("TSLA", startCalendar.getTime(), calendar.getTime());
+        Map result = new HashMap();
+        result.put("draw", 1);
+        result.put("recordsTotal", stockDailyPrices.size());
+        result.put("recordsFiltered", stockDailyPrices.size());
+        result.put("data", stockDailyPrices);
         return result;
     }
 

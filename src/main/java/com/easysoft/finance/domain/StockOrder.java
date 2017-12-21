@@ -5,11 +5,7 @@ import java.io.Serializable;
 import java.util.Date;
 
 @Entity
-public class StockOrder implements Serializable {
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private Long id;
+public class StockOrder extends BaseEntity implements Serializable {
 
     @Column(nullable = false)
     Date createdDate;
@@ -27,25 +23,17 @@ public class StockOrder implements Serializable {
     @Column(nullable = true)
     private float buyPrice = 0;
 
-    @Column(nullable = true, columnDefinition="default 0")
+    @Column(nullable = true)
     private Long sellNum = 0l;
     @Column(nullable = true)
     private float sellFee = 0;
     @Column(nullable = true)
     private float sellPrice = 0;
 
-    @Column(nullable = true, length = 1, columnDefinition="default 'N'")
+    @Column(nullable = true, length = 1)
     private String sent = "N";
 
     // ... additional members, often include @OneToMany mappings
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
 
     public Date getCreatedDate() {
         return createdDate;

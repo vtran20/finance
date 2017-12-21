@@ -38,9 +38,9 @@ public class ScheduledTasks {
     EmailService emailService;
 
     /**
-     * This method will get price from Yahoo Finance and update into each stock on each day. Data of Saturday or Sunday will be stored in last Friday.
+     * This method will get price from Alpha Vantage and update into each stock on each day. Data of Saturday or Sunday will be stored in last Friday.
      */
-    @Scheduled(cron = "0 */10 8-17 * * ?")
+    @Scheduled(cron = "0 0 8-18 * * ?")
     public void importDailyPrice() {
 
         //get all stocks
@@ -49,7 +49,17 @@ public class ScheduledTasks {
             ls.add(i.next().getSymbol());
         }
         priceService.importStockPrice(ls);
-        log.info("The time is now 1 " + new Date());
+        log.info("Import daily Price " + new Date());
+    }
+
+    /**
+     * This method will get price from Alpha Vantage and update into each stock at 1st each month. Data of Saturday or Sunday will be stored in last Friday.
+     *
+     */
+    @Scheduled(cron = "0 0 18 1 * ?")
+    public void importMonthlyPrice() {
+        priceService.importHistoryPrice();
+        log.info("Import monthly Price: " + new Date());
     }
 
     /**

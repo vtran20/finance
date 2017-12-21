@@ -5,11 +5,7 @@ import java.io.Serializable;
 import java.util.Date;
 
 @Entity
-public class StockDailyPrice implements Serializable {
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private Long id;
-
+public class StockDailyPrice extends BaseEntity implements Serializable {
     @Column(nullable = false)
     private String symbol;
 
@@ -33,15 +29,7 @@ public class StockDailyPrice implements Serializable {
         this.symbol = symbol;
     }
 
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public Date getDate() {
+     public Date getDate() {
         return date;
     }
 

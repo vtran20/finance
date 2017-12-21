@@ -17,4 +17,10 @@ public interface StockDailyPriceRepository extends CrudRepository<StockDailyPric
     @Query("select c from StockDailyPrice c where c.symbol = :symbol and c.date >= :startDate and c.date <= :endDate order by c.date desc ")
     List<StockDailyPrice> findBySymbolAnDate(@Param("symbol") String symbol, @Param("startDate") Date startDate, @Param("endDate") Date endDate);
 
+    @Query("select c.price from StockDailyPrice c where c.symbol = :symbol and c.date >= :startDate and c.date <= :endDate order by c.date asc ")
+    List<Double> findPriceBySymbolAndDate(@Param("symbol") String symbol, @Param("startDate") Date startDate, @Param("endDate") Date endDate);
+
+//    @Query("select c.price from StockDailyPrice c where c.symbol = :symbol order by c.date desc LIMIT :topNumber")
+//    List<Double> findPriceBySymbolAndDate(@Param("symbol") String symbol, @Param("topNumber") int topNumber);
+
 }

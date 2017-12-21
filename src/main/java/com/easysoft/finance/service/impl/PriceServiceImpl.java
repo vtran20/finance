@@ -16,10 +16,7 @@ import org.springframework.stereotype.Service;
 
 import java.io.IOException;
 import java.text.SimpleDateFormat;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * Created by vutran on 9/25/2017.
@@ -32,6 +29,11 @@ public class PriceServiceImpl implements PriceService {
     @Autowired
     StockRepository stockRepository;
 
+    /**
+     * Update stock price in current day
+     *
+     * @param symbol
+     */
     @Override
     public void importStockPrice(String symbol) {
         StockInfo stockInfo = null;
@@ -54,6 +56,11 @@ public class PriceServiceImpl implements PriceService {
         }
     }
 
+    /**
+     * Update list stock price in current day
+     *
+     * @param symbols
+     */
     @Override
     public void importStockPrice(List<String> symbols) {
         if (symbols != null) {
@@ -85,9 +92,13 @@ public class PriceServiceImpl implements PriceService {
      * @param symbol
      */
     public void importHistoryPrice (String symbol) {
+        importHistoryPrice(symbol, false);
+    }
+    public void importHistoryPrice (String symbol, boolean full) {
         try {
             if (StringUtils.isEmpty(symbol)) return;
-            StockInfo stockInfo = AlphaVentageUtil.getStockDaily(symbol);
+            List <StockDailyPrice>stockDailyPrices = new ArrayList<StockDailyPrice>();
+            StockInfo stockInfo = AlphaVentageUtil.getStockDaily(symbol, full);
             for (Map.Entry<String, StockPrice> quote : stockInfo.getMap().entrySet()) {
                 Date date = Utils.getCalendarWithoutTime(new SimpleDateFormat(Base.DATE_FORMAT).parse(quote.getKey())).getTime();
                 StockDailyPrice stockDailyPrice = stockDailyPriceRepository.findBySymbolAnDate(stockInfo.getSymbol(), date);
@@ -96,25 +107,18 @@ public class PriceServiceImpl implements PriceService {
                     stockDailyPrice.setSymbol(stockInfo.getSymbol());
                     stockDailyPrice.setPrice(quote.getValue().getClosePrice());
                     stockDailyPrice.setDate(date);
+                    stockDailyPrices.add(stockDailyPrice);
                 } else {
                     stockDailyPrice.setPrice(quote.getValue().getClosePrice());
+                    stockDailyPrices.add(stockDailyPrice);
                 }
-                stockDailyPriceRepository.save(stockDailyPrice);
+            }
+            if (!stockDailyPrices.isEmpty()) {
+                stockDailyPriceRepository.saveAll(stockDailyPrices);
             }
         } catch (Exception e) {
             e.printStackTrace();
         }
-
-    }
-
-    /**
-     * Import history stock daily price from to.
-     *
-     * @param from
-     * @param to
-     * @deprecated
-     */
-    public void importHistoryPrice (Date from, Date to) {
 
     }
 

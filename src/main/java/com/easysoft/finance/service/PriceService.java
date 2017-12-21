@@ -13,6 +13,5 @@ public interface PriceService {
     public void importStockPrice (List<String> symbols);
     public void importHistoryPrice ();
     public void importHistoryPrice (String symbol);
-    @Deprecated
-    public void importHistoryPrice (Date from, Date to);
+    public void importHistoryPrice (String symbol, boolean full);
 }

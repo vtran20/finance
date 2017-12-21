@@ -5,10 +5,7 @@ import java.io.Serializable;
 import java.util.List;
 
 @Entity
-public class Stock implements Serializable {
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private Long id;
+public class Stock extends BaseEntity implements Serializable {
 
     @Column(nullable = false)
     private String symbol;
@@ -65,11 +62,4 @@ public class Stock implements Serializable {
         this.exchange = exchange;
     }
 
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
 }

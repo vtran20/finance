@@ -43,29 +43,7 @@ public class StockPriceHistory {
         Calendar currCalendar = Utils.getCalendarWithoutTime();
         for (StockDailyPrice dailyPrice: stockDailyPrices) {
             symbol = dailyPrice.getSymbol();
-            if (currCalendar.getTime().equals(dailyPrice.getDate())) {
-                priceHistory.add(dailyPrice.getPrice());
-                currCalendar.add(Calendar.DAY_OF_YEAR, -1);
-            } else {
-                //if weekend, move to last Friday
-                while (Utils.isWeekend(currCalendar.getTime())) {
-                    currCalendar.add(Calendar.DAY_OF_YEAR, -1);
-                }
-                // if the current date doesn't have data, set price = 0 and move to the previous day
-                while (currCalendar.getTime().before(dailyPrice.getDate())) {
-                    priceHistory.add(0d);
-                    currCalendar.add(Calendar.DAY_OF_YEAR, -1);
-                }
-                // For holiday, exchange close move the currentCalendar to previous day.
-                while (dailyPrice.getDate().before(currCalendar.getTime())) {
-                    currCalendar.add(Calendar.DAY_OF_YEAR, -1);
-                }
-                // if current date match
-                if (currCalendar.getTime().equals(dailyPrice.getDate())) {
-                    priceHistory.add(dailyPrice.getPrice());
-                    currCalendar.add(Calendar.DAY_OF_YEAR, -1);
-                }
-            }
+            priceHistory.add(dailyPrice.getPrice());
         }
 
         if (priceHistory.size() > 1 && priceHistory.get(1) > 0) {
@@ -113,8 +91,8 @@ public class StockPriceHistory {
         if (priceHistory.size() > 90 && priceHistory.get(90) > 0) {
             diff90days = ((priceHistory.get(0)*100)/priceHistory.get(90)) - 100;
         }
-        if (priceHistory.size() > 100 && priceHistory.get(100) > 0) {
-            diff100days = ((priceHistory.get(0)*100)/priceHistory.get(100)) - 100;
+        if (priceHistory.size() >= 100 && priceHistory.get(99) > 0) {
+            diff100days = ((priceHistory.get(0)*99)/priceHistory.get(99)) - 100;
         }
 
     }
