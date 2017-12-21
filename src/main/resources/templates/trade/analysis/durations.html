@@ -17,11 +17,13 @@
                 <th>Name</th>
                 <th>Start Date</th>
                 <th>End Date</th>
+                <th>Rerun</th>
             </tr>
             <tr th:each="duration : ${durations}">
                 <td><a th:href="${'/trade/analysis/'+duration.id}" th:text="${duration.name}">Symbol</a></td>
                 <td th:text="${duration.startDate}"></td>
                 <td th:text="${duration.endDate}"></td>
+                <td><a th:href="${'/trade/analysis/rerun/'+duration.id}">Rerun</a></td>
             </tr>
         </table>
 

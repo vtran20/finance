@@ -1,6 +1,7 @@
 package com.easysoft.finance.web;
 
 import com.easysoft.finance.domain.*;
+import com.easysoft.finance.domain.pojo.SharpeRatio;
 import com.easysoft.finance.domain.pojo.StockPriceDiff1DayHistory;
 import com.easysoft.finance.domain.pojo.StockPriceHistory;
 import com.easysoft.finance.repository.*;
@@ -133,6 +134,38 @@ public class TradeController {
         return "redirect:/trade/analysis/" + stockAnalysisDuration.getId();
     }
 
+    @RequestMapping("/trade/analysis/rerun/{id}")
+    public String viewStockAnalysis(@PathVariable Long id, Model model) {
+        //Get all Stocks
+        try {
+            for (Stock st : stockRepository.findAll()) {
+                //Get stock prices during this duration
+                List<StockAnalysis> stockAnalysises = stockAnalysisRepository.findByDurationBySymbol(id, st.getSymbol());
+                if (stockAnalysises != null && !stockAnalysises.isEmpty()) {
+                    //Do nothing
+                } else {
+                    StockAnalysisDuration stockAnalysisDuration = stockAnalysisDurationRepository.findById(id).get();
+                    if (stockAnalysisDuration != null) {
+                        List<Double> dailyPrices = stockDailyPriceRepository.findPriceBySymbolAndDate(st.getSymbol(), stockAnalysisDuration.getStartDate(), stockAnalysisDuration.getEndDate());
+                        SharpeRatio sr = new SharpeRatio(dailyPrices);
+                        StockAnalysis stockAnalysis = new StockAnalysis();
+                        stockAnalysis.setSymbol(st.getSymbol());
+                        stockAnalysis.setStockAnalysisDuration(stockAnalysisDuration);
+                        stockAnalysis.setCumulativeReturn(sr.getCumulativeReturn());
+                        stockAnalysis.setAverageReturn(sr.getAverageDailyReturn());
+                        stockAnalysis.setRiskStandardDeviation(sr.getRiskSTD());
+                        stockAnalysis.setSharpeRatio(sr.getSharpeRatio());
+                        stockAnalysisRepository.save(stockAnalysis);
+                    }
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        model.addAttribute("durations", stockAnalysisDurationRepository.findAll());
+        return "trade/analysis/durations";
+    }
     @RequestMapping("/trade/analysis/{id}")
     public String viewStockAnalysis(@PathVariable Long id, Model model,@RequestParam(required=false,name="sort") String sort, @RequestParam(required=false,name="column") String column) {
         List<StockAnalysis> stockAnalysises = stockAnalysisRepository.findByDuration(id);

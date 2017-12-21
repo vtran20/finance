@@ -11,6 +11,8 @@ import java.util.List;
 public interface StockAnalysisRepository extends CrudRepository<StockAnalysis, Long> {
     @Query("select c from StockAnalysis c where c.stockAnalysisDuration.id = :id")
     List<StockAnalysis> findByDuration(@Param("id") Long id);
+    @Query("select c from StockAnalysis c where c.stockAnalysisDuration.id = :id and c.symbol = :symbol")
+    List<StockAnalysis> findByDurationBySymbol(@Param("id") Long id, @Param("symbol") String symbol);
 
     // custom query example and return a stream
 //    @Query("select c from Stock c where c.symbol = :symbol")

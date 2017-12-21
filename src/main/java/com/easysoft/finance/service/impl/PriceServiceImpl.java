@@ -153,6 +153,5 @@ public class PriceServiceImpl implements PriceService {
         } catch (Exception e) {
             e.printStackTrace();
         }
-        //Calculate sharpe ratio
     }
 }
