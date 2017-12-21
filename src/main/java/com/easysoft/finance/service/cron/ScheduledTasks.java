@@ -56,7 +56,7 @@ public class ScheduledTasks {
      * This method will get price from Alpha Vantage and update into each stock at 1st each month. Data of Saturday or Sunday will be stored in last Friday.
      *
      */
-    @Scheduled(cron = "0 0 18 1 * ?")
+    @Scheduled(cron = "0 5 18 1 * ?")
     public void importMonthlyPrice() {
         priceService.importHistoryPrice(false);
         log.info("Import monthly Price: " + new Date());
