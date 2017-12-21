@@ -8,6 +8,8 @@ import com.easysoft.finance.domain.Stock;
 import com.easysoft.finance.domain.StockAnalysis;
 import com.easysoft.finance.domain.StockAnalysisDuration;
 import com.easysoft.finance.domain.StockDailyPrice;
+import com.easysoft.finance.repository.StockAnalysisDurationRepository;
+import com.easysoft.finance.repository.StockAnalysisRepository;
 import com.easysoft.finance.repository.StockDailyPriceRepository;
 import com.easysoft.finance.repository.StockRepository;
 import com.easysoft.finance.service.PriceService;
@@ -16,9 +18,11 @@ import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.io.IOException;
 import java.text.SimpleDateFormat;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+import java.util.Map;
 
 @Service
 public class PriceServiceImpl implements PriceService {
@@ -28,9 +32,9 @@ public class PriceServiceImpl implements PriceService {
     @Autowired
     StockRepository stockRepository;
     @Autowired
-    StockAnalysis stockAnalysis;
+    StockAnalysisRepository stockAnalysisRepository;
     @Autowired
-    StockAnalysisDuration stockAnalysisDuration;
+    StockAnalysisDurationRepository stockAnalysisDurationRepository;
 
     /**
      * Update stock price in current day
