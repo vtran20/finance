@@ -365,7 +365,7 @@ public class TradeController {
                         Double price = priceList.get(i);
                         if (prices.length() <= 0) {
                             prices.append(price);
-                            days.append(priceList.size() - i);
+                            days.append(priceList.size() - i) ;
                         } else {
                             prices.append(",");
                             prices.append(price);
