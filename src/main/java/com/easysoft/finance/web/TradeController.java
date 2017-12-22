@@ -47,6 +47,13 @@ public class TradeController {
     private Facebook facebook;
     @Autowired
     private ConnectionRepository connectionRepository;
+
+    @RequestMapping(value = "/", method = RequestMethod.GET)
+    public String index(Model model) {
+        model.addAttribute("durations", stockAnalysisDurationRepository.findAll());
+        return "trade/analysis/durations";
+    }
+
     ////////////////////////////START STOCK///////////////////////////////////////
     @RequestMapping("trade/stock/new")
     public String newStock(Model model) {
@@ -380,7 +387,7 @@ public class TradeController {
                 model.addAttribute("prices", "["+prices+"]");
             }
         }
-        return "/trade/stock/history.html";
+        return "/trade/stock/history";
     }
 
     @RequestMapping("/diffndays")
@@ -411,9 +418,9 @@ public class TradeController {
 
         model.addAttribute("stockPriceHistories", stockPriceHistories);
         model.addAttribute("trades", getTradeMap());
-        return "diffndays.html";
+        return "diffndays";
     }
-    @RequestMapping("/")
+    @RequestMapping("/daily")
     public String stockDiff1DayPrice(Model model, @RequestParam(required=false,name="sort") String sort, @RequestParam(required=false,name="diff") Integer diff) {
 
                 Iterator<Stock> stocks = stockRepository.findAll().iterator();
@@ -451,7 +458,7 @@ public class TradeController {
 
         model.addAttribute("stockPriceHistories", stockPriceHistories);
         model.addAttribute("trades", getTradeMap());
-        return "index.html";
+        return "daily";
     }
 
     /**
@@ -491,7 +498,7 @@ public class TradeController {
 
         model.addAttribute("stockPriceHistories", stockPriceHistories);
         model.addAttribute("trades", getTradeMap());
-        return "index.html";
+        return "daily";
 
     }
     @RequestMapping("/reload")
@@ -533,7 +540,7 @@ public class TradeController {
     @RequestMapping(value = "/facebook", method = RequestMethod.GET)
     public String helloFacebook(Model model) {
         if (connectionRepository.findPrimaryConnection(Facebook.class) == null) {
-            return "redirect:/connect/facebookConnect.html";
+            return "redirect:/connect/facebookConnect";
         }
 
         model.addAttribute("facebookProfile", facebook.userOperations().getUserProfile());

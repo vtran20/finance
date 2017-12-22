@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head lang="en">
+<title>Stock Prices</title>
+    <!--/*/ <th:block th:include="fragments/headerinc :: head"></th:block> /*/-->
+</head>
+<body>
+
+<div class="container">
+    <!--/*/ <th:block th:include="fragments/header :: header"></th:block> /*/-->
+    <div th:if="${not #lists.isEmpty(stockPriceHistories)}">
+        <h2>Stock Price</h2>
+        <table class="table table-striped">
+            <tr>
+                <th>20</th>
+                <th>19</th>
+                <th>18</th>
+                <th>17</th>
+                <th>16</th>
+                <th>15</th>
+                <th>14</th>
+                <th>13</th>
+                <th>12</th>
+                <th>11</th>
+                <th>10</th>
+                <th>9</th>
+                <th>8</th>
+                <th>7</th>
+                <th>6</th>
+                <th>5</th>
+                <th>4</th>
+                <th>3</th>
+                <th>2</th>
+                <th><a href="/?sort=Y">1day</a></th>
+                <th>%Diff <a href="/?diff=5">5</a> <a href="/?diff=10">10</a> <a href="/?diff=15">15</a> <a href="/?diff=20">20</a></th>
+                <th>Current</th>
+                <th>Symbol</th>
+            </tr>
+            <tr th:each="stock : ${stockPriceHistories}">
+                <div th:if="${not #lists.isEmpty(stock.stockDailyPrices)}">
+                <td th:style="${stock.diff20 > 0? 'background:green;color: white':stock.diff20 == 0? 'background:blue;color: white':'background:red;color: white'}"  th:text="${#numbers.formatDecimal(stock.diff20, 1, 2)}"></td>
+                <td th:style="${stock.diff19 > 0? 'background:green;color: white':stock.diff19 == 0? 'background:blue;color: white':'background:red;color: white'}"  th:text="${#numbers.formatDecimal(stock.diff19, 1, 2)}"></td>
+                <td th:style="${stock.diff18 > 0? 'background:green;color: white':stock.diff18 == 0? 'background:blue;color: white':'background:red;color: white'}"  th:text="${#numbers.formatDecimal(stock.diff18, 1, 2)}"></td>
+                <td th:style="${stock.diff17 > 0? 'background:green;color: white':stock.diff17 == 0? 'background:blue;color: white':'background:red;color: white'}"  th:text="${#numbers.formatDecimal(stock.diff17, 1, 2)}"></td>
+                <td th:style="${stock.diff16 > 0? 'background:green;color: white':stock.diff16 == 0? 'background:blue;color: white':'background:red;color: white'}"  th:text="${#numbers.formatDecimal(stock.diff16, 1, 2)}"></td>
+                <td th:style="${stock.diff15 > 0? 'background:green;color: white':stock.diff15 == 0? 'background:blue;color: white':'background:red;color: white'}"  th:text="${#numbers.formatDecimal(stock.diff15, 1, 2)}"></td>
+                <td th:style="${stock.diff14 > 0? 'background:green;color: white':stock.diff14 == 0? 'background:blue;color: white':'background:red;color: white'}"  th:text="${#numbers.formatDecimal(stock.diff14, 1, 2)}"></td>
+                <td th:style="${stock.diff13 > 0? 'background:green;color: white':stock.diff13 == 0? 'background:blue;color: white':'background:red;color: white'}"  th:text="${#numbers.formatDecimal(stock.diff13, 1, 2)}"></td>
+                <td th:style="${stock.diff12 > 0? 'background:green;color: white':stock.diff12 == 0? 'background:blue;color: white':'background:red;color: white'}"  th:text="${#numbers.formatDecimal(stock.diff12, 1, 2)}"></td>
+                <td th:style="${stock.diff11 > 0? 'background:green;color: white':stock.diff11 == 0? 'background:blue;color: white':'background:red;color: white'}"  th:text="${#numbers.formatDecimal(stock.diff11, 1, 2)}"></td>
+                <td th:style="${stock.diff10 > 0? 'background:green;color: white':stock.diff10 == 0? 'background:blue;color: white':'background:red;color: white'}"  th:text="${#numbers.formatDecimal(stock.diff10, 1, 2)}"></td>
+                <td th:style="${stock.diff9 > 0? 'background:green;color: white':stock.diff9 == 0? 'background:blue;color: white':'background:red;color: white'}"  th:text="${#numbers.formatDecimal(stock.diff9, 1, 2)}"></td>
+                <td th:style="${stock.diff8 > 0? 'background:green;color: white':stock.diff8 == 0? 'background:blue;color: white':'background:red;color: white'}"  th:text="${#numbers.formatDecimal(stock.diff8, 1, 2)}"></td>
+                <td th:style="${stock.diff7 > 0? 'background:green;color: white':stock.diff7 == 0? 'background:blue;color: white':'background:red;color: white'}"  th:text="${#numbers.formatDecimal(stock.diff7, 1, 2)}"></td>
+                <td th:style="${stock.diff6 > 0? 'background:green;color: white':stock.diff6 == 0? 'background:blue;color: white':'background:red;color: white'}"  th:text="${#numbers.formatDecimal(stock.diff6, 1, 2)}"></td>
+                <td th:style="${stock.diff5 > 0? 'background:green;color: white':stock.diff5 == 0? 'background:blue;color: white':'background:red;color: white'}"  th:text="${#numbers.formatDecimal(stock.diff5, 1, 2)}"></td>
+                <td th:style="${stock.diff4 > 0? 'background:green;color: white':stock.diff4 == 0? 'background:blue;color: white':'background:red;color: white'}"  th:text="${#numbers.formatDecimal(stock.diff4, 1, 2)}"></td>
+                <td th:style="${stock.diff3 > 0? 'background:green;color: white':stock.diff3 == 0? 'background:blue;color: white':'background:red;color: white'}"  th:text="${#numbers.formatDecimal(stock.diff3, 1, 2)}"></td>
+                <td th:style="${stock.diff2 > 0? 'background:green;color: white':stock.diff2 == 0? 'background:blue;color: white':'background:red;color: white'}"  th:text="${#numbers.formatDecimal(stock.diff2, 1, 2)}"></td>
+                <td th:style="${stock.diff1 > 0? 'background:green;color: white':stock.diff1 == 0? 'background:blue;color: white':'background:red;color: white'}"  th:text="${#numbers.formatDecimal(stock.diff1, 1, 2)}"></td>
+                <td th:text="${#numbers.formatDecimal(stock.getNegativeAmount(), 1, 2)}"></td>
+                <td th:text="${#numbers.formatDecimal(stock.currPrice, 1, 2)}"></td>
+                <td><a th:href="${'/trade/stock/history?symbol='+stock.symbol}" th:text="${stock.symbol}" th:title="${trades[__${stock.symbol}__]}">Symbol</a></td>
+                </div>
+            </tr>
+        </table>
+
+    </div>
+</div>
+</body>
+</html>
