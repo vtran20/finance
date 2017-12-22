@@ -309,7 +309,7 @@ public class TradeController {
     }
 
     @RequestMapping("trade/stock/history")
-    public String stockDetailHistory(Model model, @RequestParam(required=false,name="symbol") String [] symbols) {
+    public String stockDetailHistory(Model model, @RequestParam(required=false,name="symbol") String [] symbols, @RequestParam(required=false,name="duration") Integer duration) {
         if (symbols != null) {
             List<StockPriceDiff1DayHistory> stockPriceHistories = new ArrayList<>();
             List<StockPriceHistory> stockPriceDiffNDays = new ArrayList<>();
@@ -334,24 +334,50 @@ public class TradeController {
                 model.addAttribute("stockPriceHistories", stockPriceHistories);
                 model.addAttribute("stockPriceDiffNDays", stockPriceDiffNDays);
 
-                String days = "";
-                String prices = "";
-                for (int i = stockDailyPrices.size() -1 ; i >= 0; i--) {
-                    StockDailyPrice sp = stockDailyPrices.get(i);
-                    if ("".equals(days)) {
-                        days = String.valueOf(i);
-                    } else {
-                        days = days + "," + String.valueOf(i);
+                StringBuilder days = new StringBuilder();
+                StringBuilder prices = new StringBuilder();
+                if (duration == null || duration<= 0) {
+                    for (int i = stockDailyPrices.size() -1 ; i >= 0; i--) {
+                        StockDailyPrice sp = stockDailyPrices.get(i);
+                        if (days.length() <=0) {
+                            days.append(String.valueOf(i));
+                        } else {
+                            days.append(",");
+                            days.append(String.valueOf(i));
+                        }
+                        if (prices.length() <= 0) {
+                            prices.append(String.valueOf(sp.getPrice()));
+                        } else {
+                            prices.append(",");
+                            prices.append(String.valueOf(sp.getPrice()));
+                        }
                     }
-                    if ("".equals(prices)) {
-                        prices = String.valueOf(sp.getPrice());
-                    } else {
-                        prices = prices + "," + String.valueOf(sp.getPrice());
+                } else {
+                    startCalendar = Utils.getCalendarWithoutTime();
+                    Date ed = startCalendar.getTime();
+                    startCalendar.add(Calendar.DAY_OF_YEAR, -duration);
+                    Date sd = startCalendar.getTime();
+                    log.info(sd);
+                    log.info(ed);
+                    List<Double> priceList = stockDailyPriceRepository.findPriceBySymbolAndDate(symbol, sd, ed);
+                    log.info(priceList.size());
+                    for(int i = 0; i < priceList.size(); i++){
+                        Double price = priceList.get(i);
+                        if (prices.length() <= 0) {
+                            prices.append(price);
+                            days.append(priceList.size() - i);
+                        } else {
+                            prices.append(",");
+                            prices.append(price);
+                            days.append(",");
+                            days.append(priceList.size() - i);
+                        }
+
                     }
+
                 }
                 model.addAttribute("days", "["+days+"]");
                 model.addAttribute("prices", "["+prices+"]");
-
             }
         }
         return "/trade/stock/history.html";
