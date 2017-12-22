@@ -40,7 +40,7 @@ public class ScheduledTasks {
     /**
      * This method will get price from Alpha Vantage and update into each stock on each day. Data of Saturday or Sunday will be stored in last Friday.
      */
-    @Scheduled(cron = "0 0 8-18 * * ?")
+    @Scheduled(cron = "0 5 10-16 * * MON-FRI")
     public void importDailyPrice() {
 
         //get all stocks
@@ -56,16 +56,16 @@ public class ScheduledTasks {
      * This method will get price from Alpha Vantage and update into each stock at 1st each month. Data of Saturday or Sunday will be stored in last Friday.
      *
      */
-    @Scheduled(cron = "0 5 18 1 * ?")
+    @Scheduled(cron = "0 5 19 * * MON-FRI")
     public void importMonthlyPrice() {
         priceService.importHistoryPrice(false);
-        log.info("Import monthly Price: " + new Date());
+        log.info("Import Daily Last Price: " + new Date());
     }
 
     /**
      * Send email to notify stocks have interest.
      */
-    @Scheduled(cron = "0 */11 8-17 * * ?")
+    @Scheduled(cron = "0 */11 8-17 * * MON-FRI")
     public void notifyForStockCanBeSold() {
         List<StockOrder> stockOrders = stockOrderRepository.findActiveOrders();
         for (StockOrder order: stockOrders) {
