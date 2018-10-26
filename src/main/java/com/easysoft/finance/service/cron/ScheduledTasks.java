@@ -9,6 +9,7 @@ import com.easysoft.finance.repository.StockRepository;
 import com.easysoft.finance.service.EmailService;
 import com.easysoft.finance.service.PriceService;
 import com.easysoft.utils.Utils;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
@@ -48,6 +49,7 @@ public class ScheduledTasks {
         for (Iterator<Stock> i = stockRepository.findAll().iterator(); i.hasNext();) {
             ls.add(i.next().getSymbol());
         }
+        String symbols = StringUtils.join(ls);
         priceService.importStockPrice(ls);
         log.info("Import daily Price " + new Date());
     }

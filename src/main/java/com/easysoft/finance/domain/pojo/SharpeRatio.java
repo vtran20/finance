@@ -7,9 +7,9 @@ import java.util.Map;
 /**
  * This class is used to calculate.
  * 1. Cumulative Return (Total return)
- * 2. Average Daily Return - mean
- * 3. Risk (Standard Deviation of Return)
- * 4. Sharpe Ratio
+ * 2. Average Daily Return - mean: High is good
+ * 3. Risk (Standard Deviation of Return): Low is good
+ * 4. Sharpe Ratio: High is good
  */
 public class SharpeRatio {
     private double cumulativeReturn = 0;

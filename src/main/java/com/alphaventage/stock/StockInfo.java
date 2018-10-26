@@ -8,6 +8,7 @@ import com.fasterxml.jackson.annotation.JsonSetter;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.List;
 import java.util.Map;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
@@ -44,6 +45,16 @@ public class StockInfo extends Base{
     @JsonSetter("Time Series (Daily)")
     public void setMapDaily(Map map) {
         this.map = map;
+    }
+
+    private List<StockBatch> stockBatches;
+
+    public List<StockBatch> getStockBatches() {
+        return stockBatches;
+    }
+    @JsonSetter("Stock Quotes")
+    public void setMapStockBatch(List stockBatches) {
+        this.stockBatches = stockBatches;
     }
 
 

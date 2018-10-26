@@ -1,5 +1,6 @@
 package com.alphaventage;
 
+import com.alphaventage.stock.StockBatch;
 import com.alphaventage.stock.StockInfo;
 import com.alphaventage.stock.StockPrice;
 import com.easysoft.finance.domain.Stock;
@@ -9,6 +10,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.springframework.web.client.RestTemplate;
 
 import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.Map;
 
 public class AlphaVentageUtil {
@@ -17,6 +19,7 @@ public class AlphaVentageUtil {
     public static String API_KEY = "UBX2MT8XVJOMTE07";
     public static String TIME_SERIES_INTRADAY = "TIME_SERIES_INTRADAY";
     public static String TIME_SERIES_DAILY = "TIME_SERIES_DAILY";
+    public static String BATCH_STOCK_QUOTES = "BATCH_STOCK_QUOTES";
 
     public static StockInfo getStockInTradeDay(String symbol) throws Exception {
         return getStockInTradeDay(symbol, null);
@@ -67,4 +70,30 @@ public class AlphaVentageUtil {
         return stockInfo;
     }
 
+    /**
+     * The batch stock quotes API enables the querying of multiple stock quotes with a single API request, updated realtime.
+     * It may serve as a lightweight alternative to our core stock time series APIs above (which have richer content but are symbol-specific).
+     *
+     * @param symbols
+     * @return
+     * @throws Exception
+     */
+    public static List<StockBatch> getBatchStocks(String symbols) throws Exception {
+        if (StringUtils.isEmpty(symbols)) {
+            throw new Exception("Symbol is empty");
+        }
+        RestTemplate restTemplate = new RestTemplate();
+        StockInfo stockInfo = restTemplate.getForObject(ALPHA_VENTAGE_URL + "function={function}&symbols={symbol}&apikey={apikey}", StockInfo.class, BATCH_STOCK_QUOTES, symbols, API_KEY);
+        ObjectMapper mapper = new ObjectMapper();
+        List<StockBatch> stocks = mapper.convertValue(stockInfo.getStockBatches(), new TypeReference<List<StockBatch>>() {});
+        return stocks;
+    }
+
+    public static void main(String[] args) {
+        try {
+            //getBatchStocks("MSFT,FB,AAPL");
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
 }
