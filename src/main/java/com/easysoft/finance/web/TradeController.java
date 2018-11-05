@@ -6,7 +6,6 @@ import com.easysoft.finance.domain.pojo.StockPriceDiff1DayHistory;
 import com.easysoft.finance.domain.pojo.StockPriceHistory;
 import com.easysoft.finance.repository.*;
 import com.easysoft.finance.service.PriceService;
-import com.easysoft.finance.service.cron.ScheduledTasks;
 import com.easysoft.utils.Utils;
 import org.apache.commons.collections.IteratorUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -40,8 +39,6 @@ public class TradeController {
     StockAnalysisRepository stockAnalysisRepository;
     @Autowired
     PriceService priceService;
-    @Autowired
-    ScheduledTasks scheduledTasks;
 
     @Autowired
     private Facebook facebook;
@@ -308,10 +305,12 @@ public class TradeController {
         return "redirect:/trade/orders";
     }
     ////////////////////////////END ORDER///////////////////////////////////////
-
+    /*
+    * Reload stock should be last 100 days
+    * */
     @RequestMapping("trade/stock/reload/{symbol}")
     public String reloadPrice(@PathVariable String symbol) {
-        priceService.importHistoryPrice(symbol, true);
+        priceService.importHistoryPrice(symbol, false);
         return "redirect:/diffndays";
     }
 

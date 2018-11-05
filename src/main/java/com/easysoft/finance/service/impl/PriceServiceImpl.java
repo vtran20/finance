@@ -61,9 +61,10 @@ public class PriceServiceImpl implements PriceService {
                 stockDailyPrice.setPrice(price);
             }
             stockDailyPriceRepository.save(stockDailyPrice);
+            log.info("importStockPrice success for share:"+symbol);
         } catch (Exception e) {
             log.info("importStockPrice fail for share:"+symbol);
-            e.printStackTrace();
+//            e.printStackTrace();
         }
     }
 
