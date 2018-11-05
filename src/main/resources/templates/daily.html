@@ -9,7 +9,7 @@
 <div class="container">
     <!--/*/ <th:block th:include="fragments/header :: header"></th:block> /*/-->
     <div th:if="${not #lists.isEmpty(stockPriceHistories)}">
-        <h2>Stock Price</h2>
+        <h2 th:text="${'Daily Stock Price - Number: ' + #maps.size(trades)}"></h2>
         <table class="table table-striped">
             <tr>
                 <th>20</th>
@@ -32,7 +32,7 @@
                 <th>3</th>
                 <th>2</th>
                 <th><a href="/?sort=Y">1day</a></th>
-                <th>%Diff <a href="/?diff=5">5</a> <a href="/?diff=10">10</a> <a href="/?diff=15">15</a> <a href="/?diff=20">20</a></th>
+                <th>%Diff <a th:href="@{__${#httpServletRequest.requestURI}__}+'?diff=5'">5</a> <a th:href="@{__${#httpServletRequest.requestURI}__}+'?diff=10'">10</a> <a th:href="@{__${#httpServletRequest.requestURI}__}+'?diff=15'">15</a> <a th:href="@{__${#httpServletRequest.requestURI}__}+'?diff=20'">20</a></th>
                 <th>Current</th>
                 <th>Symbol</th>
             </tr>
@@ -60,12 +60,13 @@
                 <td th:style="${stock.diff1 > 0? 'background:green;color: white':stock.diff1 == 0? 'background:blue;color: white':'background:red;color: white'}"  th:text="${#numbers.formatDecimal(stock.diff1, 1, 2)}"></td>
                 <td th:text="${#numbers.formatDecimal(stock.getNegativeAmount(), 1, 2)}"></td>
                 <td th:text="${#numbers.formatDecimal(stock.currPrice, 1, 2)}"></td>
-                <td><a th:href="${'/trade/stock/history?symbol='+stock.symbol}" th:text="${stock.symbol}" th:title="${trades[__${stock.symbol}__]}">Symbol</a></td>
+                <td><a th:href="${'/trade/stock/history?symbol='+stock.symbol}" th:text="${stock.symbol}" th:title="${trades[__${stock.symbol}__]}"></a></td>
                 </div>
             </tr>
         </table>
 
     </div>
 </div>
+<!--/*/ <th:block th:include="fragments/footer :: footer"></th:block> /*/-->
 </body>
 </html>
