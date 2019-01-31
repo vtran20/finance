@@ -69,4 +69,11 @@ public class Utils {
         }
         return false;
     }
+    float max3Number (float f1, float f2, float f3) {
+        return Math.max(f1, Math.max(f2, f3));
+    }
+    float min3Number (float f1, float f2, float f3) {
+        return Math.min(f1, Math.min(f2, f3));
+    }
+
 }

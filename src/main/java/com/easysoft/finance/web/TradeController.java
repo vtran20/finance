@@ -1,9 +1,7 @@
 package com.easysoft.finance.web;
 
 import com.easysoft.finance.domain.*;
-import com.easysoft.finance.domain.pojo.SharpeRatio;
-import com.easysoft.finance.domain.pojo.StockPriceDiff1DayHistory;
-import com.easysoft.finance.domain.pojo.StockPriceHistory;
+import com.easysoft.finance.domain.pojo.*;
 import com.easysoft.finance.repository.*;
 import com.easysoft.finance.service.PriceService;
 import com.easysoft.utils.Utils;
@@ -20,6 +18,8 @@ import org.springframework.ui.Model;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.*;
 
@@ -588,4 +588,188 @@ public class TradeController {
         return result;
     }
 
+    @RequestMapping(value="/team", method = {RequestMethod.GET, RequestMethod.POST})
+    public String welcome(HttpServletRequest request, HttpServletResponse response, Map<String, Object> model) {
+        List initPlayers = new ArrayList();
+        initPlayers.add(new Player("A Chieu","7.21","7.43"));
+        initPlayers.add(new Player("Duc","5.5","5.86"));
+        initPlayers.add(new Player("Tuan AA","7.43","7.93"));
+        initPlayers.add(new Player("Vu","8.79","8.29"));
+        initPlayers.add(new Player("Ga Minh","7.57","8.21"));
+        initPlayers.add(new Player("B Anh","7.43","7.57"));
+        initPlayers.add(new Player("Nguyen","7.71","6.86"));
+        initPlayers.add(new Player("Chinh","7.43","6.79"));
+        initPlayers.add(new Player("Duy","6.07","6.50"));
+        initPlayers.add(new Player("Hiep", "7.43", "8.0"));
+        initPlayers.add(new Player("Hieu DT","6.71","6.79"));
+        initPlayers.add(new Player("Hieu AA","7.43","7.29"));
+        initPlayers.add(new Player("Khoa","9.07","7.64"));
+        initPlayers.add(new Player("Nhu","9.07","7.07"));
+        initPlayers.add(new Player("Tuan DT","7.07","6.93"));
+        initPlayers.add(new Player("Thai","6.86","7.07"));
+        initPlayers.add(new Player("Nghia DT", "8.07", "7.79"));
+        initPlayers.add(new Player("New 1", "0", "0"));
+        initPlayers.add(new Player("New 2", "0", "0"));
+
+        int NUMBER_PLAYER = initPlayers.size();
+        int RUN_TIMES = 1000;
+
+        List listJoinPlayers = new ArrayList();
+        List allListPlayers = new ArrayList();
+        for (int i = 0; i < NUMBER_PLAYER; i++) {
+            Player initPlayer = (Player)initPlayers.get(i);
+            String name = request.getParameter("name"+i);
+            if (name == null) {
+                name = initPlayer.getName();
+            }
+            Player player = new Player();
+            player.setName(name);
+            System.out.println("join"+i+"="+request.getParameter("join" + i));
+            player.setJoin(request.getParameter("join" + i) != null ? request.getParameter("join" + i) : null);
+            player.setAttack(request.getParameter("attack" + i) != null ? request.getParameter("attack" + i) : initPlayer.getAttack());
+            player.setDefense(request.getParameter("defense" + i) != null ? request.getParameter("defense" + i) : initPlayer.getDefense());
+            player.setPerformance(request.getParameter("performance" + i) != null ? request.getParameter("performance" + i) : "0");
+            allListPlayers.add(player);
+            if (player.isJoin()) {
+                listJoinPlayers.add(player);
+            }
+        }
+
+        String numTeam = request.getParameter("team");
+        System.out.println("team="+numTeam);
+        float CONSTRAINT_POINT = request.getParameter("constraint") == null? 1f : Float.parseFloat(request.getParameter("constraint"));
+        if (!(numTeam != null && (numTeam.equals("2") || numTeam.equals("3")))) {
+            model.put("error", "true");
+        } else {
+            model.put("error", "false");
+        /*
+        1. Sort players list by total point.
+        2. Divide by group based on number of team. Ex: 3 teams divide to each group 3 players.
+        3. Algorithm:
+        + First 3 groups: pick random player for each team.
+        + The rest groups will be picked based on total point.
+        */
+
+            int team = Integer.parseInt(numTeam);;
+
+            //3 teams
+            List allTeams = new ArrayList();
+            Team teamA = null;
+            Team teamB = null;
+            Team teamC = null;
+            if (team == 3) {
+                Random rand = new Random();
+                //2 first group will be divided randomly.
+                boolean continues = true;
+                int times = 0;
+                float constraint = Float.MAX_VALUE;
+                List allTeamsTemp = null;
+                do {
+                    times++;
+                    allTeams.clear();
+                    teamA = new Team();
+                    teamB = new Team();
+                    teamC = new Team();
+                    allTeams.add(teamA);
+                    allTeams.add(teamB);
+                    allTeams.add(teamC);
+
+                    List groupPlayer = new ArrayList(listJoinPlayers);
+                    while (groupPlayer.size() > 0) {
+                        int r = 0;
+                        if (groupPlayer.size() > 0) {
+                            r = rand.nextInt(groupPlayer.size()) + 1;
+                            teamA.add((Player) groupPlayer.remove(r - 1));
+                        }
+                        if (groupPlayer.size() > 0) {
+                            r = rand.nextInt(groupPlayer.size()) + 1;
+                            teamB.add((Player) groupPlayer.remove(r - 1));
+                        }
+                        if (groupPlayer.size() > 0) {
+                            r = rand.nextInt(groupPlayer.size()) + 1;
+                            teamC.add((Player) groupPlayer.remove(r - 1));
+                        }
+                    }
+
+                    //Sort total point
+                    Collections.sort(allTeams);
+                    Team first = (Team) allTeams.get(0);
+                    Team last = (Team) allTeams.get(team - 1);
+                    if (first.getTotalPoint() - last.getTotalPoint() < CONSTRAINT_POINT) {
+                        continues = false;
+                    }
+                    //get minimum constraint
+                    if (constraint > first.getTotalPoint() - last.getTotalPoint()) {
+                        constraint = first.getTotalPoint() - last.getTotalPoint();
+                        allTeamsTemp = new ArrayList(allTeams);
+                    }
+
+                } while (continues && times < RUN_TIMES);
+
+                if (continues && allTeamsTemp != null && allTeamsTemp.size() >= 3) {
+                    teamA = (Team) allTeamsTemp.get(0);
+                    teamB = (Team) allTeamsTemp.get(1);
+                    teamC = (Team) allTeamsTemp.get(2);
+                }
+                float diffPoint = Math.abs(Math.max(teamA.getTotalPoint(),Math.max(teamB.getTotalPoint(),teamC.getTotalPoint()))- Math.min(teamA.getTotalPoint(),Math.min(teamB.getTotalPoint(),teamC.getTotalPoint())));
+                model.put("diffPoint", diffPoint);
+            } else if (team == 2) {
+                Random rand = new Random();
+                //2 first group will be divided randomly.
+                boolean continues = true;
+                int times = 0;
+                float constraint = Float.MAX_VALUE;
+                List allTeamsTemp = null;
+                do {
+                    times++;
+                    allTeams.clear();
+                    teamA = new Team();
+                    teamB = new Team();
+                    allTeams.add(teamA);
+                    allTeams.add(teamB);
+                    List groupPlayer = new ArrayList(listJoinPlayers);
+                    while (groupPlayer.size() > 0) {
+                        int r = 0;
+                        if (groupPlayer.size() > 0) {
+                            r = rand.nextInt(groupPlayer.size()) + 1;
+                            teamA.add((Player) groupPlayer.remove(r - 1));
+                        }
+                        if (groupPlayer.size() > 0) {
+                            r = rand.nextInt(groupPlayer.size()) + 1;
+                            teamB.add((Player) groupPlayer.remove(r - 1));
+                        }
+                    }
+                    //Sort total point
+                    Collections.sort(allTeams);
+                    Team first = (Team) allTeams.get(0);
+                    Team last = (Team) allTeams.get(team - 1);
+                    if (first.getTotalPoint() - last.getTotalPoint() < CONSTRAINT_POINT) {
+                        continues = false;
+                    }
+                    //get minimum constraint
+                    if (constraint > first.getTotalPoint() - last.getTotalPoint()) {
+                        constraint = first.getTotalPoint() - last.getTotalPoint();
+                        allTeamsTemp = new ArrayList(allTeams);
+                    }
+
+                } while (continues && times < RUN_TIMES);
+
+                if (continues && allTeamsTemp != null && allTeamsTemp.size() >= 2) {
+                    teamA = (Team) allTeamsTemp.get(0);
+                    teamB = (Team) allTeamsTemp.get(1);
+                }
+                float diffPoint = Math.abs(teamA.getTotalPoint() - teamB.getTotalPoint());
+                model.put("diffPoint", diffPoint);
+            }
+            model.put("teamA", teamA);
+            model.put("teamB", teamB);
+            model.put("teamC", teamC);
+        }
+        model.put("listJoinPlayers", listJoinPlayers);
+        model.put("allListPlayers", allListPlayers);
+        model.put("team", numTeam != null ? numTeam: "2");
+        model.put("constraint", request.getParameter("constraint") != null?request.getParameter("constraint"): "1");
+
+        return "team";
+    }
 }

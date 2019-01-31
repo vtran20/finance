@@ -16,30 +16,21 @@
                         <li><a href="#" th:href="@{/suggestion}" sec:authorize="hasRole('ROLE_ADMIN')">Suggestion</a></li>
                         <li><a href="#" th:href="@{/diffndays}" sec:authorize="hasRole('ROLE_ADMIN')">Diff N Days</a></li>
                         <li><a href="#" th:href="@{/trade/stocks}" sec:authorize="hasRole('ROLE_ADMIN')">Stocks</a></li>
-                        <li class="dropdown">
-                            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Dropdown <span class="caret"></span></a>
-                            <ul class="dropdown-menu">
-                                <li><a href="#">Action</a></li>
-                                <li><a href="#">Another action</a></li>
-                                <li><a href="#">Something else here</a></li>
-                                <li role="separator" class="divider"></li>
-                                <li class="dropdown-header">Nav header</li>
-                                <li><a href="#">Separated link</a></li>
-                                <li><a href="#">One more separated link</a></li>
-                            </ul>
-                        </li>
-                        <!--<li class="dropdown top-menu">-->
-                            <!--<a href="javascript:void(0);" class="dropdown-toggle" data-toggle="dropdown"> Đối Tác</a>-->
-                            <!--<ul class="dropdown-menu">-->
-                                <!--<li id="sitepartnerpartner-html_"><a href="/site/partner/partner.html"> Trở Thành Đối Tác</a></li>-->
-                            <!--</ul>-->
-                        <!--</li>-->
                         <li><a href="#" th:href="@{/trade/stock/new}" sec:authorize="hasRole('ROLE_ADMIN')">Add Stock</a></li>
                         <li><a href="#" th:href="@{/trade/orders}" sec:authorize="hasRole('ROLE_ADMIN')">Orders</a></li>
                         <li><a href="#" th:href="@{/trade/order/new}" sec:authorize="hasRole('ROLE_ADMIN')">Add Order</a></li>
-                        <li><a href="#" th:href="@{/reload}" sec:authorize="hasRole('ROLE_ADMIN')">Reload Price</a></li>
-                        <li><a href="#" th:href="@{/trade/analysis/new}" sec:authorize="hasRole('ROLE_ADMIN')">Add Analysis</a></li>
-                        <li><a href="#" th:href="@{/trade/durations}" sec:authorize="hasRole('ROLE_ADMIN')">Analysis Duration</a></li>
+                        <li class="dropdown" sec:authorize="hasRole('ROLE_ADMIN')">
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Dropdown <span class="caret"></span></a>
+                            <ul class="dropdown-menu">
+                                <li><a href="#" th:href="@{/reload}" sec:authorize="hasRole('ROLE_ADMIN')">Reload Price</a></li>
+                                <li><a href="#" th:href="@{/trade/analysis/new}" sec:authorize="hasRole('ROLE_ADMIN')">Add Analysis</a></li>
+                                <li><a href="#" th:href="@{/trade/durations}" sec:authorize="hasRole('ROLE_ADMIN')">Analysis Duration</a></li>
+                                <!--<li role="separator" class="divider"></li>-->
+                                <!--<li class="dropdown-header">Nav header</li>-->
+                                <!--<li><a href="#">Separated link</a></li>-->
+                                <!--<li><a href="#">One more separated link</a></li>-->
+                            </ul>
+                        </li>
                         <li sec:authorize="!isAuthenticated()"><a href="#" th:href="@{/login}">Login</a></li>
                         <li sec:authorize="isAuthenticated()"><a href="#" th:href="@{/logout}">Logout</a></li>
                     </ul>
