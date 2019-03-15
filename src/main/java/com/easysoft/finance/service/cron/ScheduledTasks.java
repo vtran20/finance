@@ -43,7 +43,8 @@ public class ScheduledTasks {
      * This method will be run at 9:30 every morning and reset all data need.
      */
 //    @Scheduled(cron = "0 30 9 * * *") //EST
-    @Scheduled(cron = "0 30 14 * * *") //UTC
+//    @Scheduled(cron = "0 30 8 * * *") //EDT
+    @Scheduled(cron = "0 30 3 * * *") //UTC
     public void resetDataDaily() {
         //Reset keyMap data.
 
@@ -55,7 +56,8 @@ public class ScheduledTasks {
      * This method will get price from Alpha Vantage and update into each stock on each day. Data of Saturday or Sunday will be stored in last Friday.
      */
 //    @Scheduled(cron = "0 5 10,12,14 * * MON-FRI") //EST
-    @Scheduled(cron = "0 5 15,17,19 * * MON-FRI") //UTC
+//    @Scheduled(cron = "0 5 9,11,13 * * MON-FRI") //EDT
+    @Scheduled(cron = "0 5 14,16,18 * * MON-FRI") //UTC
     public void importDailyPrice() {
 
         //get all stocks
@@ -72,7 +74,8 @@ public class ScheduledTasks {
      * This method will get price from Alpha Vantage and update into each stock at 1st each month. Data of Saturday or Sunday will be stored in last Friday.
      */
 //    @Scheduled(cron = "0 5 17 * * MON-FRI") //EST
-    @Scheduled(cron = "0 5 22 * * MON-FRI") //UTC
+//    @Scheduled(cron = "0 5 16 * * MON-FRI") //EDT
+    @Scheduled(cron = "0 5 21 * * MON-FRI") //UTC
     public void importMonthlyPrice() {
         priceService.importHistoryPrice(false);
         log.info("Import Daily Last Price: " + new Date());
