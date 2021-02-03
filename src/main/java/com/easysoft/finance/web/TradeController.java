@@ -501,8 +501,24 @@ public class TradeController {
 
     }
     @RequestMapping("/reload")
-    public String reloadDaily() {
+    public String reloadMonthly() {
+//        taskScheduler.schedule(tasks.importMonthlyPrice(), new Date()); // schedule task for current time
         priceService.importHistoryPrice(false);
+        return "redirect:/";
+    }
+
+    @RequestMapping("/reload/daily")
+    public String reloadDaily() {
+        //get all stocks
+        List<String> ls = new ArrayList<>();
+        for (Iterator<Stock> i = stockRepository.findAll().iterator(); i.hasNext(); ) {
+            ls.add(i.next().getSymbol());
+        }
+        priceService.importStockPrice(ls);
+        log.info("Import daily Price " + new Date());
+
+        //TODO: Implement if need
+        //notifyForStockCanBeSold();
         return "redirect:/";
     }
     @RequestMapping("/reloadhistory")

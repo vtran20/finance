@@ -22,7 +22,8 @@
                         <li class="dropdown" sec:authorize="hasRole('ROLE_ADMIN')">
                             <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Dropdown <span class="caret"></span></a>
                             <ul class="dropdown-menu">
-                                <li><a href="#" th:href="@{/reload}" sec:authorize="hasRole('ROLE_ADMIN')">Reload Price</a></li>
+                                <li><a href="#" th:href="@{/reload}" sec:authorize="hasRole('ROLE_ADMIN')">Reload Monthly</a></li>
+                                <li><a href="#" th:href="@{/reload/daily}" sec:authorize="hasRole('ROLE_ADMIN')">Reload Daily</a></li>
                                 <li><a href="#" th:href="@{/trade/analysis/new}" sec:authorize="hasRole('ROLE_ADMIN')">Add Analysis</a></li>
                                 <li><a href="#" th:href="@{/trade/durations}" sec:authorize="hasRole('ROLE_ADMIN')">Analysis Duration</a></li>
                                 <!--<li role="separator" class="divider"></li>-->

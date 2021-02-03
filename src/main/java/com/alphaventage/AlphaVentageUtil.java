@@ -16,7 +16,7 @@ public class AlphaVentageUtil {
 
     public static String ALPHA_VENTAGE_URL = "https://www.alphavantage.co/query?";
     public static String[] API_KEY = {"P367S5GY5FFVL6CB"/*,"9T8D6Y4HL4XFNBJW","UBX2MT8XVJOMTE07", "ZOD2DP7OAN1S7WI9", "ZGPF0CBUSTLTBC87","CUO5H1ZYAKJU8WAM"*/};//vuktx@yahoo.com, 1979, oracle
-    public static Integer totalRequestCount = 300*API_KEY.length;
+    public static Integer totalRequestCount = 500*API_KEY.length;
     public static Integer totalRequestCountUsed = 0;
     public static String TIME_SERIES_INTRADAY = "TIME_SERIES_INTRADAY";
     public static String TIME_SERIES_DAILY = "TIME_SERIES_DAILY";
