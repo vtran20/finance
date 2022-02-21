@@ -1,6 +1,7 @@
 package com.easysoft.finance.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.mail.MailException;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
@@ -15,11 +16,24 @@ public class EmailService {
     @Autowired
     private JavaMailSender javaMailSender;
 
+    @Value("${spring.mail.username}")
+    private String emailFrom;
+
     public void sendTextMail(String subject, String body) throws MailException {
 
         SimpleMailMessage mail = new SimpleMailMessage();
         mail.setTo("vu.t.tran@oracle.com");
-        mail.setFrom("vuktx1979@gmail.com");
+        mail.setFrom(emailFrom);
+        mail.setSubject(subject);
+        mail.setText(body);
+        javaMailSender.send(mail);
+    }
+
+    public void sendTextMail(String to, String subject, String body) throws MailException {
+
+        SimpleMailMessage mail = new SimpleMailMessage();
+        mail.setTo(to);
+        mail.setFrom(emailFrom);
         mail.setSubject(subject);
         mail.setText(body);
         javaMailSender.send(mail);

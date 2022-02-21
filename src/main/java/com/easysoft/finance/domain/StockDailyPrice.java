@@ -1,10 +1,22 @@
 package com.easysoft.finance.domain;
 
-import javax.persistence.*;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Index;
+import javax.persistence.Table;
 import java.io.Serializable;
 import java.util.Date;
 
 @Entity
+@Table(indexes = {
+        @Index(columnList = "symbol")
+//        @Index(name = "fn_index", columnList = "firstName"),
+//        @Index(name = "mulitIndex1", columnList = "firstName, lastName"),
+//        @Index(name = "mulitIndex2", columnList = "lastName, firstName"),
+//        @Index(name = "mulitSortIndex", columnList = "firstName, lastName DESC"),
+//        @Index(name = "uniqueIndex", columnList = "firstName", unique = true),
+//        @Index(name = "uniqueMulitIndex", columnList = "firstName, lastName", unique = true)
+})
 public class StockDailyPrice extends BaseEntity implements Serializable {
     @Column(nullable = false)
     private String symbol;
@@ -29,7 +41,7 @@ public class StockDailyPrice extends BaseEntity implements Serializable {
         this.symbol = symbol;
     }
 
-     public Date getDate() {
+    public Date getDate() {
         return date;
     }
 

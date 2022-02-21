@@ -1,16 +1,13 @@
 package com.easysoft.finance.domain;
 
-import javax.persistence.*;
+import javax.persistence.Column;
+import javax.persistence.Entity;
 import java.io.Serializable;
 import java.util.Date;
 
 @Entity
 public class StockOrder extends BaseEntity implements Serializable {
 
-    @Column(nullable = false)
-    Date createdDate;
-    @Column(nullable = false)
-    Date updatedDate;
     @Column(nullable = true)
     Date settlementDate;
     @Column(nullable = false)
@@ -34,22 +31,6 @@ public class StockOrder extends BaseEntity implements Serializable {
     private String sent = "N";
 
     // ... additional members, often include @OneToMany mappings
-
-    public Date getCreatedDate() {
-        return createdDate;
-    }
-
-    public void setCreatedDate(Date createdDate) {
-        this.createdDate = createdDate;
-    }
-
-    public Date getUpdatedDate() {
-        return updatedDate;
-    }
-
-    public void setUpdatedDate(Date updatedDate) {
-        this.updatedDate = updatedDate;
-    }
 
     public Date getSettlementDate() {
         return settlementDate;

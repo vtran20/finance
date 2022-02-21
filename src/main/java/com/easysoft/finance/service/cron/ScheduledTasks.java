@@ -4,20 +4,21 @@ import com.alphaventage.AlphaVentageUtil;
 import com.easysoft.finance.domain.Stock;
 import com.easysoft.finance.domain.StockDailyPrice;
 import com.easysoft.finance.domain.StockOrder;
-import com.easysoft.finance.repository.StockOrderRepository;
 import com.easysoft.finance.repository.StockDailyPriceRepository;
+import com.easysoft.finance.repository.StockOrderRepository;
 import com.easysoft.finance.repository.StockRepository;
 import com.easysoft.finance.service.EmailService;
 import com.easysoft.finance.service.PriceService;
 import com.easysoft.utils.Utils;
-import org.apache.commons.lang3.StringUtils;
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
-import java.io.IOException;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.Iterator;
+import java.util.List;
 
 /**
  * Created by vutran on 9/22/2017.
@@ -26,7 +27,7 @@ import java.util.*;
 @Component
 public class ScheduledTasks {
 
-    private Logger log = Logger.getLogger(ScheduledTasks.class);
+    private Logger log = LoggerFactory.getLogger(ScheduledTasks.class);
 
     @Autowired
     StockRepository stockRepository;
@@ -42,7 +43,7 @@ public class ScheduledTasks {
     /**
      * This method will be run at 9:30 every morning and reset all data need.
      */
-    @Scheduled(cron = "0 30 9 * * *") //EST
+    //@Scheduled(cron = "0 30 9 * * *") //EST
 //    @Scheduled(cron = "0 30 8 * * *") //EDT
 //    @Scheduled(cron = "0 30 3 * * *") //UTC
     public void resetDataDaily() {
@@ -55,7 +56,7 @@ public class ScheduledTasks {
     /**
      * This method will get price from Alpha Vantage and update into each stock on each day. Data of Saturday or Sunday will be stored in last Friday.
      */
-    @Scheduled(cron = "0 5 10,12,14 * * MON-FRI") //EST
+    //@Scheduled(cron = "0 5 10,12,14 * * MON-FRI") //EST
 //    @Scheduled(cron = "0 5 9,11,13 * * MON-FRI") //EDT
 //    @Scheduled(cron = "0 5 14,16,18 * * MON-FRI") //UTC
     public void importDailyPrice() {
@@ -76,7 +77,7 @@ public class ScheduledTasks {
 //    @Scheduled(cron = "0 5 17 * * MON-FRI") //EST
 //    @Scheduled(cron = "0 5 16 * * MON-FRI") //EDT
 //    @Scheduled(cron = "0 5 21 * * MON-FRI") //UTC
-    @Scheduled(cron = "0 20 14 * * MON-FRI")
+    //@Scheduled(cron = "0 20 14 * * MON-FRI")
     public void importMonthlyPrice() {
         priceService.importHistoryPrice(false);
         log.info("Import Daily Last Price: " + new Date());
@@ -95,7 +96,6 @@ public class ScheduledTasks {
                 double orderPrice = order.getBuyPrice() * (order.getBuyNum() - order.getSellNum());
 
                 double interest = ((currentPrice - orderPrice) * 100) / currentPrice;
-                log.info(interest);
                 if (interest > 3) {
                     emailService.sendTextMail("SS", "SS - " + order.getSymbol() + ":" + interest);
                     order.setSent("Y");

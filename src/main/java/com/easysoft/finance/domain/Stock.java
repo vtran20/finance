@@ -1,13 +1,13 @@
 package com.easysoft.finance.domain;
 
-import javax.persistence.*;
+import javax.persistence.Column;
+import javax.persistence.Entity;
 import java.io.Serializable;
-import java.util.List;
 
 @Entity
 public class Stock extends BaseEntity implements Serializable {
 
-    @Column(nullable = false)
+    @Column(nullable = false, unique = true)
     private String symbol;
 
     @Column(nullable = true)
@@ -17,7 +17,8 @@ public class Stock extends BaseEntity implements Serializable {
     private String exchange;
 
     @Column(nullable = true)
-    private Long totalShare;
+
+    private Long volumns;
 
     // ... additional members, often include @OneToMany mappings
     public Stock() {
@@ -25,9 +26,9 @@ public class Stock extends BaseEntity implements Serializable {
         // this one is protected since it shouldn't be used directly
     }
 
-    public Stock(String name, String code) {
+    public Stock(String name, String symbol) {
         this.name = name;
-        this.symbol = code;
+        this.symbol = symbol;
     }
 
     public String getName() {
@@ -46,12 +47,12 @@ public class Stock extends BaseEntity implements Serializable {
         this.symbol = symbol;
     }
 
-    public Long getTotalShare() {
-        return totalShare;
+    public Long getVolumns() {
+        return volumns;
     }
 
-    public void setTotalShare(Long totalShare) {
-        this.totalShare = totalShare;
+    public void setVolumns(Long volumns) {
+        this.volumns = volumns;
     }
 
     public String getExchange() {

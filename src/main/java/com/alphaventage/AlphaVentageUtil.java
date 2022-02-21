@@ -99,7 +99,8 @@ public class AlphaVentageUtil {
         RestTemplate restTemplate = new RestTemplate();
         StockInfo stockInfo = restTemplate.getForObject(ALPHA_VENTAGE_URL + "function={function}&symbol={symbol}&interval={interval}&apikey={apikey}", StockInfo.class, TIME_SERIES_INTRADAY, symbol, interval, getAPIKey());
         ObjectMapper mapper = new ObjectMapper();
-        LinkedHashMap<String, StockPrice> stock = mapper.convertValue(stockInfo.getMap(), new TypeReference<Map<String, StockPrice>>() {});
+        LinkedHashMap<String, StockPrice> stock = (LinkedHashMap<String, StockPrice>) mapper.convertValue(stockInfo.getMap(), new TypeReference<Map<String, StockPrice>>() {
+        });
         stockInfo.setMap(stock);
         stockInfo.setSymbol(symbol);
         return stockInfo;
@@ -129,7 +130,8 @@ public class AlphaVentageUtil {
         RestTemplate restTemplate = new RestTemplate();
         StockInfo stockInfo = restTemplate.getForObject(ALPHA_VENTAGE_URL + "function={function}&symbol={symbol}&apikey={apikey}&outputsize={outputSize}", StockInfo.class, TIME_SERIES_DAILY, symbol, getAPIKey(), outputSize);
         ObjectMapper mapper = new ObjectMapper();
-        LinkedHashMap<String, StockPrice> stock = mapper.convertValue(stockInfo.getMap(), new TypeReference<Map<String, StockPrice>>() {});
+        LinkedHashMap<String, StockPrice> stock = (LinkedHashMap<String, StockPrice>) mapper.convertValue(stockInfo.getMap(), new TypeReference<Map<String, StockPrice>>() {
+        });
         stockInfo.setMap(stock);
         stockInfo.setSymbol(symbol);
         return stockInfo;

@@ -2,7 +2,6 @@ package com.easysoft.finance.component;
 
 import com.easysoft.finance.domain.Stock;
 import com.easysoft.finance.repository.StockRepository;
-import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationListener;
 import org.springframework.context.event.ContextRefreshedEvent;
@@ -10,8 +9,6 @@ import org.springframework.context.event.ContextRefreshedEvent;
 public class DataLoader implements ApplicationListener<ContextRefreshedEvent> {
 
     private StockRepository stockRepository;
-
-    private Logger log = Logger.getLogger(DataLoader.class);
 
     @Autowired
     public void setStockRepository(StockRepository stockRepository) {
