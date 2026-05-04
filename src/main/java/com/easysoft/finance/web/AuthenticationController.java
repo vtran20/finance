@@ -4,6 +4,7 @@ import com.easysoft.finance.configuration.MyUserDetailService;
 import com.easysoft.finance.configuration.event.UserForgetPasswordEvent;
 import com.easysoft.finance.configuration.event.UserRegistrationEvent;
 import com.easysoft.finance.configuration.event.UserResendActivationCodeEvent;
+import com.easysoft.finance.configuration.exception.CustomException;
 import com.easysoft.finance.configuration.exception.ResourceAlreadyExists;
 import com.easysoft.finance.configuration.exception.ResourceNotFoundException;
 import com.easysoft.finance.configuration.exception.UnauthorizedException;
@@ -14,7 +15,6 @@ import com.easysoft.finance.domain.auth.AuthenticationResponse;
 import com.easysoft.finance.repository.UserRepository;
 import com.easysoft.finance.service.EmailService;
 import com.easysoft.utils.Utils;
-import javassist.bytecode.DuplicateMemberException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -87,10 +87,10 @@ public class AuthenticationController {
      *
      * @param user
      * @return
-     * @throws DuplicateMemberException
+     * @throws CustomException
      */
     @PostMapping("/register")
-    public User createUser(@RequestBody User user, @RequestBody Map data) throws DuplicateMemberException {
+    public User createUser(@RequestBody User user, @RequestBody Map data) throws CustomException {
         if (userRepository.findByUsername(user.getUsername()).isPresent()) {
             throw new ResourceAlreadyExists("Conflict", "The username " + user.getUsername() + " is existing.", null, null);
         }
@@ -109,10 +109,10 @@ public class AuthenticationController {
      *
      * @param user
      * @return
-     * @throws DuplicateMemberException
+     * @throws CustomException
      */
     @PostMapping("/verify-token")
-    public User verifyToken(@RequestBody User user) throws DuplicateMemberException {
+    public User verifyToken(@RequestBody User user) throws CustomException {
         String token = user.getToken();
         if (StringUtils.hasLength(token)) {
             if (jwtUtil.isTokenExpired(token)) {

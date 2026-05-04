@@ -112,7 +112,7 @@
             </tr>
         </table>
 
-    <div><a th:href="@{''(symbol=${param.symbol},duration=365)}">1 Year</a> | <a th:href="'/trade/stock/reload/'+${param.symbol}">Reload</a></div>
+    <div><!--<a th:href="@{''(symbol=${param.symbol},duration=365)}">1 Year</a> |--> <a th:href="'/trade/stock/reload/'+${#httpServletRequest.getParameter('symbol')}">Reload</a></div>
     <div>
         <canvas id="canvas"> </canvas>
     </div>

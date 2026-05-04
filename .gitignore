@@ -1,1 +1,21 @@
 # Add any directories, files, or patterns you don't want to be tracked by version control
+/target/
+finance.iws
+
+# IntelliJ / IDE files
+.idea/
+*.iml
+*.ipr
+
+# macOS
+.DS_Store
+
+# Environment and local secrets
+env.txt
+credentials.json
+src/main/resources/credentials.json
+*.jks
+*.p12
+
+# Local request logs
+httpRequests/

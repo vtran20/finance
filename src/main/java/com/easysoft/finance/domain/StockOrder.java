@@ -27,6 +27,12 @@ public class StockOrder extends BaseEntity implements Serializable {
     @Column(nullable = true)
     private float sellPrice = 0;
 
+    @Column(nullable = true, length = 50)
+    private String externalOrderId;
+    @Column(nullable = true, length = 20)
+    private String externalCompany;
+
+
     @Column(nullable = true, length = 1)
     private String sent = "N";
 
@@ -103,4 +109,6 @@ public class StockOrder extends BaseEntity implements Serializable {
     public void setSent(String sent) {
         this.sent = sent;
     }
+
+
 }
